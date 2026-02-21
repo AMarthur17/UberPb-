@@ -59,4 +59,18 @@ public class RestauranteRepositoryJSON extends BaseRepository<Restaurante> {
     protected void setId(Restaurante entity, int id) {
         entity.setId(id);
     }
+
+    /**
+     * Recupera restaurantes disponíveis (abertos) do sistema
+     */
+    public List<Restaurante> findDisponiveis() {
+        lock.readLock().lock();
+        try {
+            return loadAll().stream()
+                .filter(Restaurante::isAberto)
+                .toList();
+        } finally {
+            lock.readLock().unlock();
+        }
+    }
 }

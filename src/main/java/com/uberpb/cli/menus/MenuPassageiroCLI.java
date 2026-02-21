@@ -46,6 +46,8 @@ public class MenuPassageiroCLI {
             System.out.println("8 - Ver informacoes do perfil");
             System.out.println("9 - Ver avaliação média");
             System.out.println("10 - Gerar recibo de corrida");
+            System.out.println("12 - Listar restaurantes disponíveis");
+            System.out.println("13 - Visualizar cardápio de restaurante");
             System.out.println("11 - Voltar");
             System.out.print("Escolha: ");
             int op = sc.nextInt();
@@ -62,11 +64,79 @@ public class MenuPassageiroCLI {
                 case 8 -> verInformacoesPerfil();
                 case 9 -> verAvaliacaoMedia();
                 case 10 -> gerarReciboCorrida();
+                case 12 -> listarRestaurantesDisponiveis();
+                case 13 -> visualizarCardapioRestaurante();
+                    /**
+                     * Fluxo de visualização do cardápio de um restaurante disponível
+                     */
+                    private void visualizarCardapioRestaurante() {
+                        System.out.println("\n--- Visualizar Cardápio de Restaurante ---");
+                        var restaurantes = db.findRestaurantesDisponiveis();
+                        if (restaurantes.isEmpty()) {
+                            System.out.println("Nenhum restaurante disponível para visualização de cardápio.");
+                            System.out.println("\nPressione Enter para continuar...");
+                            sc.nextLine();
+                            return;
+                        }
+                        for (int i = 0; i < restaurantes.size(); i++) {
+                            var r = restaurantes.get(i);
+                            System.out.println((i + 1) + ". " + r.getRazaoSocial() + " | " + r.getEndereco());
+                        }
+                        System.out.print("\nEscolha o número do restaurante para ver o cardápio (0 para cancelar): ");
+                        int escolha = sc.nextInt();
+                        sc.nextLine();
+                        if (escolha == 0) return;
+                        if (escolha < 1 || escolha > restaurantes.size()) {
+                            System.out.println("Opção inválida!");
+                            System.out.println("\nPressione Enter para continuar...");
+                            sc.nextLine();
+                            return;
+                        }
+                        var restaurante = restaurantes.get(escolha - 1);
+                        var cardapio = restaurante.getCardapio();
+                        if (cardapio == null || cardapio.getItens() == null || cardapio.getItens().isEmpty()) {
+                            System.out.println("Este restaurante não possui cardápio cadastrado.");
+                        } else {
+                            System.out.println("\n--- Cardápio de " + restaurante.getRazaoSocial() + " ---");
+                            for (int i = 0; i < cardapio.getItens().size(); i++) {
+                                var item = cardapio.getItens().get(i);
+                                System.out.println((i + 1) + ". " + item.getNome() + " - R$ " + String.format("%.2f", item.getPreco()));
+                                if (item.getDescricao() != null && !item.getDescricao().isEmpty()) {
+                                    System.out.println("   " + item.getDescricao());
+                                }
+                            }
+                            System.out.println("\nTaxa de entrega: R$ " + String.format("%.2f", cardapio.getTaxaEntrega()));
+                            System.out.println("Tempo estimado de entrega: " + cardapio.getTempoEstimadoMinutos() + " min");
+                        }
+                        System.out.println("\nPressione Enter para continuar...");
+                        sc.nextLine();
+                    }
                 case 11 -> {
                     return;
                 }
                 default -> System.out.println("Opcao invalida!");
             }
+        }
+        /**
+         * Exibe a lista de restaurantes disponíveis (abertos) para o cliente
+         */
+        private void listarRestaurantesDisponiveis() {
+            System.out.println("\n--- Restaurantes Disponíveis ---");
+            var restaurantes = db.findRestaurantesDisponiveis();
+            if (restaurantes.isEmpty()) {
+                System.out.println("Nenhum restaurante disponível no momento.");
+            } else {
+                for (int i = 0; i < restaurantes.size(); i++) {
+                    var r = restaurantes.get(i);
+                    System.out.println((i + 1) + ". " + r.getRazaoSocial() + " | " + r.getEndereco());
+                    System.out.println("   Avaliação: " + String.format("%.1f", r.getAvaliacaoMedia()) + " ⭐");
+                    System.out.println("   CNPJ: " + r.getCnpj());
+                    System.out.println("   --------------------------------");
+                }
+                System.out.println("\nTotal: " + restaurantes.size() + " restaurante(s) disponível(is)");
+            }
+            System.out.println("\nPressione Enter para continuar...");
+            sc.nextLine();
         }
     }
 

@@ -12,6 +12,7 @@ public class Restaurante extends User {
     private List<Float> avaliacoes;
     private double avaliacaoMedia;
     private int totalAvaliacoes;
+    private Cardapio cardapio;
 
     public Restaurante() {
         super();
@@ -19,6 +20,7 @@ public class Restaurante extends User {
         this.avaliacoes = new ArrayList<>();
         this.avaliacaoMedia = 0.0;
         this.totalAvaliacoes = 0;
+        this.cardapio = null;
     }
 
     public String getCnpj() { return cnpj; }
@@ -38,6 +40,9 @@ public class Restaurante extends User {
         this.avaliacoes = avaliacoes;
         recalcularAvaliacaoMedia();
     }
+
+    public Cardapio getCardapio() { return cardapio; }
+    public void setCardapio(Cardapio cardapio) { this.cardapio = cardapio; }
 
     public double getAvaliacaoMedia() { return avaliacaoMedia; }
     public int getTotalAvaliacoes() { return totalAvaliacoes; }

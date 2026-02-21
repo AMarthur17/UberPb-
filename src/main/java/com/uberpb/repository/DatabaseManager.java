@@ -527,4 +527,11 @@ public class DatabaseManager {
     public void updateRestaurante(com.uberpb.model.Restaurante restaurante) {
         restauranteRepository.update(restaurante);
     }
+
+    /**
+     * Recupera restaurantes disponíveis (abertos) do sistema
+     */
+    public List<Restaurante> findRestaurantesDisponiveis() {
+        return restauranteRepository.findDisponiveis();
+    }
 }
