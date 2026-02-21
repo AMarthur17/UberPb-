@@ -12,10 +12,14 @@ database/
 │   └── passageiros.json    # Passageiros
 ├── motoristas/
 │   └── motoristas.json     # Motoristas
+├── entregadores/
+│   └── entregadores.json   # Entregadores (Delivery)
+├── restaurantes/
+│   └── restaurantes.json   # Restaurantes (Delivery)
 ├── veiculos/
 │   └── veiculos.json       # Veículos
 ├── corridas/
-│   └── corridas.json       # Corridas (futuro)
+│   └── corridas.json       # Corridas
 └── id_counter.json         # Contador global de IDs
 ```
 
@@ -187,4 +191,41 @@ Isso criará dados de exemplo em todos os arquivos JSON e mostrará as estatíst
   "veiculos": 2,
   "corridas": 1
 }
+```
+
+### entregadores.json
+```json
+[
+  {
+    "id": 4,
+    "nome": "Pedro",
+    "email": "pedro@email.com",
+    "tipo": "entregador",
+    "ativo": true,
+    "cnh": "12345678900",
+    "tipoVeiculo": "MOTO",
+    "disponivel": true,
+    "localizacaoAtual": "Centro",
+    "avaliacaoMedia": 0.0,
+    "totalAvaliacoes": 0
+  }
+]
+```
+
+### restaurantes.json
+```json
+[
+  {
+    "id": 5,
+    "nome": "João",
+    "email": "joao@email.com",
+    "tipo": "restaurante",
+    "cnpj": "12345678901234",
+    "razaoSocial": "Pizzaria do João",
+    "endereco": "Rua Principal, 123 - Centro",
+    "aberto": true,
+    "avaliacaoMedia": 0.0,
+    "totalAvaliacoes": 0
+  }
+]
 ```

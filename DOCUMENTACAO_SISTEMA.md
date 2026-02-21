@@ -2,7 +2,7 @@
 
 ## 📋 Visão Geral
 
-O **UberPB** é um sistema de transporte por aplicativo desenvolvido em Java com interface CLI (Command Line Interface). O sistema simula o funcionamento de aplicativos como Uber, permitindo que passageiros solicitem corridas e motoristas as aceitem, com funcionalidades avançadas de atribuição automática baseada em proximidade.
+O **UberPB** é um sistema multiplataforma de mobilidade e delivery desenvolvido em Java com interface CLI. O sistema simula o funcionamento de aplicativos como Uber e UberEats, integrando passageiros, motoristas, restaurantes e entregadores em um único ecossistema, com atribuição baseada em proximidade e gestão por JSON.
 
 ## 🏗️ Arquitetura do Sistema
 
@@ -26,6 +26,10 @@ O **UberPB** é um sistema de transporte por aplicativo desenvolvido em Java com
 - **Cadastro de Usuários**: Base comum para passageiros e motoristas
 - **Perfil Duplo**: Usuários podem ser passageiros E motoristas simultaneamente
 - **Validações**: CPF, email, idade, CNH, etc.
+- ### Expansão Delivery (UberEats)
+- **Cadastro de Entregador**: Validação estrita de documentos (CNH/RG) e tipo de veículo (Moto ou Bicicleta).
+- **Cadastro de Restaurante**: Validação de CNPJ (14 dígitos) e gestão de status de funcionamento (Aberto/Fechado).
+- **Menus Específicos**: Gestão de disponibilidade e localização em tempo real para entregadores.
 
 ### 2. Gestão de Passageiros
 - ✅ Cadastro de métodos de pagamento

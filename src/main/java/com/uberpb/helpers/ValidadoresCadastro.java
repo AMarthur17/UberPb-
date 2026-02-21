@@ -148,4 +148,24 @@ public class ValidadoresCadastro {
         }
         return true;
     }
+
+    public static boolean validarCNPJ(String cnpj) {
+        if (!validarCampoObrigatorio(cnpj, "CNPJ")) return false;
+        String cnpjLimpo = cnpj.replaceAll("[^0-9]", "");
+        if (cnpjLimpo.length() != 14) {
+            System.out.println("ERRO: CNPJ deve ter 14 dígitos!");
+            return false;
+        }
+        return true;
+    }
+
+    public static boolean validarTipoVeiculoEntregador(String tipo) {
+        if (!validarCampoObrigatorio(tipo, "Tipo de Veículo")) return false;
+        String t = tipo.trim().toUpperCase();
+        if (!t.equals("MOTO") && !t.equals("BICICLETA")) {
+            System.out.println("ERRO: O veículo do entregador deve ser MOTO ou BICICLETA!");
+            return false;
+        }
+        return true;
+    }
 }

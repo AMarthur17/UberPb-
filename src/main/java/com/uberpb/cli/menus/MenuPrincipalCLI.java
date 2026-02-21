@@ -26,8 +26,12 @@ public class MenuPrincipalCLI {
             System.out.println("Usuario logado: " + usuarioLogado.getNome() + " (" + usuarioLogado.getEmail() + ")");
             System.out.println("1 - Cadastrar perfil de Passageiro");
             System.out.println("2 - Cadastrar perfil de Motorista");
-            System.out.println("3 - Menu Passageiro");
-            System.out.println("4 - Menu Motorista");
+            System.out.println("3 - Cadastrar perfil de Entregador");
+            System.out.println("4 - Cadastrar perfil de Restaurante");
+            System.out.println("5 - Menu Passageiro");
+            System.out.println("6 - Menu Motorista");
+            System.out.println("7 - Menu Entregador");
+            System.out.println("8 - Menu Restaurante");
             System.out.println("9 - Logout");
             System.out.print("Escolha: ");
             int op = sc.nextInt();
@@ -36,8 +40,12 @@ public class MenuPrincipalCLI {
             switch (op) {
                 case 1 -> cadastrarPerfilPassageiro();
                 case 2 -> cadastrarPerfilMotorista();
-                case 3 -> menuPassageiro();
-                case 4 -> menuMotorista();
+                case 3 -> cadastrarPerfilEntregador();
+                case 4 -> cadastrarPerfilRestaurante();
+                case 5 -> menuPassageiro();
+                case 6 -> menuMotorista();
+                case 7 -> menuEntregador();
+                case 8 -> menuRestaurante();
                 case 9 -> {
                     System.out.println("Saindo da conta...");
                     usuarioLogado = null;
@@ -211,5 +219,139 @@ public class MenuPrincipalCLI {
 
         MenuMotoristaCLI menuMotorista = new MenuMotoristaCLI(sc, db, motorista);
         menuMotorista.exibirMenu();
+    }
+
+    private void cadastrarPerfilEntregador() {
+        var entregadorOpt = db.findEntregadorById(usuarioLogado.getId());
+        if (entregadorOpt.isPresent()) {
+            System.out.println("Voce ja possui perfil de entregador.");
+            return;
+        }
+
+        System.out.println("\n--- Cadastro de Perfil Entregador ---");
+
+        String cnh = null;
+        String tipoVeiculo = null;
+
+        while (cnh == null) {
+            System.out.print("CNH (ou RG para bicicleta): ");
+            String input = sc.nextLine();
+            if (ValidadoresCadastro.validarCampoObrigatorio(input, "Documento")) {
+                cnh = input;
+                System.out.println("✓ Documento válido!");
+            }
+        }
+
+        while (tipoVeiculo == null) {
+            System.out.print("Veículo de entrega (MOTO ou BICICLETA): ");
+            String input = sc.nextLine().trim().toUpperCase();
+            if (ValidadoresCadastro.validarTipoVeiculoEntregador(input)) {
+                tipoVeiculo = input;
+                System.out.println("✓ Veículo válido!");
+            }
+        }
+
+        Entregador e = new Entregador();
+        e.setId(usuarioLogado.getId());
+        e.setUsername(usuarioLogado.getUsername());
+        e.setSenha(usuarioLogado.getSenha());
+        e.setNome(usuarioLogado.getNome());
+        e.setSobrenome(usuarioLogado.getSobrenome());
+        e.setEmail(usuarioLogado.getEmail());
+        e.setTelefone(usuarioLogado.getTelefone());
+        e.setTipo("entregador");
+        e.setDataCadastro(usuarioLogado.getDataCadastro());
+
+        e.setCnh(cnh);
+        e.setTipoVeiculo(tipoVeiculo);
+        e.setAtivo(true);
+        e.setDisponivel(false);
+
+        db.saveEntregador(e);
+        System.out.println("\n🎉 Perfil de entregador cadastrado com sucesso!");
+    }
+
+    private void cadastrarPerfilRestaurante() {
+        var restauranteOpt = db.findRestauranteById(usuarioLogado.getId());
+        if (restauranteOpt.isPresent()) {
+            System.out.println("Voce ja possui perfil de restaurante.");
+            return;
+        }
+
+        System.out.println("\n--- Cadastro de Perfil Restaurante ---");
+
+        String cnpj = null;
+        String razaoSocial = null;
+        String endereco = null;
+
+        while (cnpj == null) {
+            System.out.print("CNPJ (14 dígitos): ");
+            String input = sc.nextLine();
+            if (ValidadoresCadastro.validarCNPJ(input)) {
+                cnpj = input;
+                System.out.println("CNPJ válido!");
+            }
+        }
+
+        while (razaoSocial == null) {
+            System.out.print("Razão Social / Nome do Restaurante: ");
+            String input = sc.nextLine();
+            if (ValidadoresCadastro.validarCampoObrigatorio(input, "Razão Social")) {
+                razaoSocial = input;
+                System.out.println("✓ Razão Social válida!");
+            }
+        }
+
+        while (endereco == null) {
+            System.out.print("Endereço completo: ");
+            String input = sc.nextLine();
+            if (ValidadoresCadastro.validarCampoObrigatorio(input, "Endereço")) {
+                endereco = input;
+                System.out.println("✓ Endereço válido!");
+            }
+        }
+
+        Restaurante r = new Restaurante();
+        r.setId(usuarioLogado.getId());
+        r.setUsername(usuarioLogado.getUsername());
+        r.setSenha(usuarioLogado.getSenha());
+        r.setNome(usuarioLogado.getNome());
+        r.setSobrenome(usuarioLogado.getSobrenome());
+        r.setEmail(usuarioLogado.getEmail());
+        r.setTelefone(usuarioLogado.getTelefone());
+        r.setTipo("restaurante");
+        r.setDataCadastro(usuarioLogado.getDataCadastro());
+
+        r.setCnpj(cnpj);
+        r.setRazaoSocial(razaoSocial);
+        r.setEndereco(endereco);
+        r.setAberto(false);
+
+        db.saveRestaurante(r);
+        System.out.println("\n🎉 Perfil de restaurante cadastrado com sucesso!");
+    }
+
+    private void menuEntregador() {
+        var entregadorOpt = db.findEntregadorById(usuarioLogado.getId());
+        if (entregadorOpt.isEmpty()) {
+            System.out.println("Você ainda não possui perfil de entregador. Cadastre primeiro (Opção 3).");
+            return;
+        }
+
+        Entregador entregador = entregadorOpt.get();
+        MenuEntregadorCLI menuEntregador = new MenuEntregadorCLI(sc, db, entregador);
+        menuEntregador.exibirMenu();
+    }
+
+    private void menuRestaurante() {
+        var restauranteOpt = db.findRestauranteById(usuarioLogado.getId());
+        if (restauranteOpt.isEmpty()) {
+            System.out.println("Você ainda não possui perfil de restaurante. Cadastre primeiro (Opção 4).");
+            return;
+        }
+
+        Restaurante restaurante = restauranteOpt.get();
+        MenuRestauranteCLI menuRestaurante = new MenuRestauranteCLI(sc, db, restaurante);
+        menuRestaurante.exibirMenu();
     }
 }

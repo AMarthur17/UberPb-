@@ -1,0 +1,18 @@
+[ {
+  "id" : 1,
+  "username" : "vitor",
+  "senha" : "Teste123@",
+  "nome" : "Vitor",
+  "sobrenome" : "Soares",
+  "email" : "vitor@gmail.com",
+  "telefone" : "83996248888",
+  "tipo" : "restaurante",
+  "dataCadastro" : "14/10/2025 20:47:23",
+  "cnpj" : "12345678901234",
+  "razaoSocial" : "RestTest",
+  "endereco" : "Villa",
+  "aberto" : true,
+  "avaliacoes" : [ ],
+  "avaliacaoMedia" : 0.0,
+  "totalAvaliacoes" : 0
+} ]

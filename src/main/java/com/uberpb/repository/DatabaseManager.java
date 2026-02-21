@@ -24,6 +24,8 @@ public class DatabaseManager {
     private final AvaliacaoRepository avaliacaoRepository;
     private final PagamentoRepositoryJSON pagamentoRepository;
     private final HistoricoRepository historicoRepository;
+    private final EntregadorRepositoryJSON entregadorRepository;
+    private final RestauranteRepositoryJSON restauranteRepository;
 
     public DatabaseManager() {
         this.userRepository = new UserRepositoryJSON();
@@ -34,6 +36,8 @@ public class DatabaseManager {
         this.avaliacaoRepository = new AvaliacaoRepository();
         this.pagamentoRepository = new PagamentoRepositoryJSON();
         this.historicoRepository = new HistoricoRepository();
+        this.entregadorRepository = new EntregadorRepositoryJSON();
+        this.restauranteRepository = new RestauranteRepositoryJSON();
     }
 
     // ===== OPERAÇÕES DE USUÁRIO =====
@@ -497,5 +501,30 @@ public class DatabaseManager {
      */
     public void limparHistoricoCache() {
         historicoRepository.limparHistorico();
+    }
+
+    // ===== OPERAÇÕES DE ENTREGADOR =====
+    public Entregador saveEntregador(Entregador entregador) {
+        return entregadorRepository.save(entregador);
+    }
+
+    public Optional<Entregador> findEntregadorById(int id) {
+        return entregadorRepository.findById(id);
+    }
+    public void updateEntregador(com.uberpb.model.Entregador entregador) {
+        entregadorRepository.update(entregador);
+    }
+
+    // ===== OPERAÇÕES DE RESTAURANTE =====
+    public Restaurante saveRestaurante(Restaurante restaurante) {
+        return restauranteRepository.save(restaurante);
+    }
+
+    public Optional<Restaurante> findRestauranteById(int id) {
+        return restauranteRepository.findById(id);
+    }
+
+    public void updateRestaurante(com.uberpb.model.Restaurante restaurante) {
+        restauranteRepository.update(restaurante);
     }
 }
