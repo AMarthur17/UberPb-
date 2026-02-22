@@ -9,12 +9,12 @@
   "tipo" : "entregador",
   "dataCadastro" : "14/10/2025 20:47:23",
   "ativo" : true,
-  "cnh" : "11133322211",
+  "cnh" : "11122233311",
   "validadeCnh" : null,
   "tipoVeiculo" : "MOTO",
   "avaliacoes" : [ ],
   "avaliacaoMedia" : 0.0,
   "totalAvaliacoes" : 0,
   "disponivel" : true,
-  "localizacaoAtual" : "Centro"
+  "localizacaoAtual" : "Praia"
 } ]

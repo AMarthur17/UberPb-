@@ -1,0 +1,11 @@
+package com.uberpb.enums;
+
+public enum StatusPedido {
+    CRIADO,
+    AGUARDANDO_ACEITE_RESTAURANTE,
+    EM_PREPARO,
+    AGUARDANDO_ENTREGADOR,
+    EM_ENTREGA,
+    ENTREGUE,
+    AGUARDANDO_RESTAURANTE, CANCELADO
+}

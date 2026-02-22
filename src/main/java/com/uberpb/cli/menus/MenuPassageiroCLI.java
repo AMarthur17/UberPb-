@@ -1,6 +1,7 @@
 package com.uberpb.cli.menus;
 
 import com.uberpb.cli.forms.AdicionarPagamentoCLI;
+import com.uberpb.cli.forms.PedidoCLI;
 import com.uberpb.cli.forms.SolicitarCorridaCLI;
 import com.uberpb.model.Corrida;
 import com.uberpb.enums.CorridaStatus;
@@ -46,9 +47,11 @@ public class MenuPassageiroCLI {
             System.out.println("8 - Ver informacoes do perfil");
             System.out.println("9 - Ver avaliação média");
             System.out.println("10 - Gerar recibo de corrida");
+            System.out.println("11 - Fazer pedido Uber Eats");
             System.out.println("12 - Listar restaurantes disponíveis");
             System.out.println("13 - Visualizar cardápio de restaurante");
-            System.out.println("11 - Voltar");
+            System.out.println("14 - Acompanhar meus pedidos (Uber Eats)");
+            System.out.println("15 - Voltar");
             System.out.print("Escolha: ");
             int op = sc.nextInt();
             sc.nextLine();
@@ -64,80 +67,129 @@ public class MenuPassageiroCLI {
                 case 8 -> verInformacoesPerfil();
                 case 9 -> verAvaliacaoMedia();
                 case 10 -> gerarReciboCorrida();
+                case 11 -> fazerPedido();
                 case 12 -> listarRestaurantesDisponiveis();
                 case 13 -> visualizarCardapioRestaurante();
-                    /**
-                     * Fluxo de visualização do cardápio de um restaurante disponível
-                     */
-                    private void visualizarCardapioRestaurante() {
-                        System.out.println("\n--- Visualizar Cardápio de Restaurante ---");
-                        var restaurantes = db.findRestaurantesDisponiveis();
-                        if (restaurantes.isEmpty()) {
-                            System.out.println("Nenhum restaurante disponível para visualização de cardápio.");
-                            System.out.println("\nPressione Enter para continuar...");
-                            sc.nextLine();
-                            return;
-                        }
-                        for (int i = 0; i < restaurantes.size(); i++) {
-                            var r = restaurantes.get(i);
-                            System.out.println((i + 1) + ". " + r.getRazaoSocial() + " | " + r.getEndereco());
-                        }
-                        System.out.print("\nEscolha o número do restaurante para ver o cardápio (0 para cancelar): ");
-                        int escolha = sc.nextInt();
-                        sc.nextLine();
-                        if (escolha == 0) return;
-                        if (escolha < 1 || escolha > restaurantes.size()) {
-                            System.out.println("Opção inválida!");
-                            System.out.println("\nPressione Enter para continuar...");
-                            sc.nextLine();
-                            return;
-                        }
-                        var restaurante = restaurantes.get(escolha - 1);
-                        var cardapio = restaurante.getCardapio();
-                        if (cardapio == null || cardapio.getItens() == null || cardapio.getItens().isEmpty()) {
-                            System.out.println("Este restaurante não possui cardápio cadastrado.");
-                        } else {
-                            System.out.println("\n--- Cardápio de " + restaurante.getRazaoSocial() + " ---");
-                            for (int i = 0; i < cardapio.getItens().size(); i++) {
-                                var item = cardapio.getItens().get(i);
-                                System.out.println((i + 1) + ". " + item.getNome() + " - R$ " + String.format("%.2f", item.getPreco()));
-                                if (item.getDescricao() != null && !item.getDescricao().isEmpty()) {
-                                    System.out.println("   " + item.getDescricao());
-                                }
-                            }
-                            System.out.println("\nTaxa de entrega: R$ " + String.format("%.2f", cardapio.getTaxaEntrega()));
-                            System.out.println("Tempo estimado de entrega: " + cardapio.getTempoEstimadoMinutos() + " min");
-                        }
-                        System.out.println("\nPressione Enter para continuar...");
-                        sc.nextLine();
-                    }
-                case 11 -> {
+                case 14 -> acompanharPedidos();
+                case 15 -> {
                     return;
                 }
                 default -> System.out.println("Opcao invalida!");
             }
         }
-        /**
-         * Exibe a lista de restaurantes disponíveis (abertos) para o cliente
-         */
-        private void listarRestaurantesDisponiveis() {
-            System.out.println("\n--- Restaurantes Disponíveis ---");
-            var restaurantes = db.findRestaurantesDisponiveis();
-            if (restaurantes.isEmpty()) {
-                System.out.println("Nenhum restaurante disponível no momento.");
-            } else {
-                for (int i = 0; i < restaurantes.size(); i++) {
-                    var r = restaurantes.get(i);
-                    System.out.println((i + 1) + ". " + r.getRazaoSocial() + " | " + r.getEndereco());
-                    System.out.println("   Avaliação: " + String.format("%.1f", r.getAvaliacaoMedia()) + " ⭐");
-                    System.out.println("   CNPJ: " + r.getCnpj());
-                    System.out.println("   --------------------------------");
-                }
-                System.out.println("\nTotal: " + restaurantes.size() + " restaurante(s) disponível(is)");
-            }
+
+    }
+    private void acompanharPedidos() {
+
+        System.out.println("\n=== MEUS PEDIDOS (Uber Eats) ===");
+
+        var pedidos = db.findPedidosByCliente(passageiro.getId());
+
+        if (pedidos.isEmpty()) {
+            System.out.println("Você ainda não fez nenhum pedido.");
             System.out.println("\nPressione Enter para continuar...");
             sc.nextLine();
+            return;
         }
+
+        for (int i = 0; i < pedidos.size(); i++) {
+            var p = pedidos.get(i);
+
+            System.out.println((i + 1) + " - Pedido #" + p.getId());
+            System.out.println("    Restaurante ID: " + p.getRestauranteId());
+            System.out.println("    Status: " + traduzirStatusPedido(p.getStatus()));
+            System.out.println("    Total: R$ " + String.format("%.2f", p.getValorTotal()));
+            System.out.println("    ---------------------------");
+        }
+
+        System.out.println("\nPressione Enter para continuar...");
+        sc.nextLine();
+    }
+    private String traduzirStatusPedido(com.uberpb.enums.StatusPedido status) {
+
+        return switch (status) {
+
+            case AGUARDANDO_RESTAURANTE -> "🕒 Aguardando confirmação do restaurante";
+            case EM_PREPARO -> "🍳 Pedido em preparo";
+            case AGUARDANDO_ENTREGADOR -> "🚚 Aguardando entregador";
+            case EM_ENTREGA -> "🛵 Saiu para entrega";
+            case ENTREGUE -> "✅ Pedido entregue";
+
+            default -> status.name();
+        };
+    }
+
+    private void fazerPedido() {
+        PedidoCLI pedidoCLI = new PedidoCLI(sc, db, passageiro);
+        pedidoCLI.exibirMenu();
+    }
+
+    /**
+     * Exibe a lista de restaurantes disponíveis (abertos) para o cliente
+     */
+    private void listarRestaurantesDisponiveis() {
+        System.out.println("\n--- Restaurantes Disponíveis ---");
+        var restaurantes = db.findRestaurantesDisponiveis();
+        if (restaurantes.isEmpty()) {
+            System.out.println("Nenhum restaurante disponível no momento.");
+        } else {
+            for (int i = 0; i < restaurantes.size(); i++) {
+                var r = restaurantes.get(i);
+                System.out.println((i + 1) + ". " + r.getRazaoSocial() + " | " + r.getEndereco());
+                System.out.println("   Avaliação: " + String.format("%.1f", r.getAvaliacaoMedia()) + " ⭐");
+                System.out.println("   CNPJ: " + r.getCnpj());
+                System.out.println("   --------------------------------");
+            }
+            System.out.println("\nTotal: " + restaurantes.size() + " restaurante(s) disponível(is)");
+        }
+        System.out.println("\nPressione Enter para continuar...");
+        sc.nextLine();
+    }
+
+    /**
+     * Fluxo de visualização do cardápio de um restaurante disponível
+     */
+    private void visualizarCardapioRestaurante() {
+        System.out.println("\n--- Visualizar Cardápio de Restaurante ---");
+        var restaurantes = db.findRestaurantesDisponiveis();
+        if (restaurantes.isEmpty()) {
+            System.out.println("Nenhum restaurante disponível para visualização de cardápio.");
+            System.out.println("\nPressione Enter para continuar...");
+            sc.nextLine();
+            return;
+        }
+        for (int i = 0; i < restaurantes.size(); i++) {
+            var r = restaurantes.get(i);
+            System.out.println((i + 1) + ". " + r.getRazaoSocial() + " | " + r.getEndereco());
+        }
+        System.out.print("\nEscolha o número do restaurante para ver o cardápio (0 para cancelar): ");
+        int escolha = sc.nextInt();
+        sc.nextLine();
+        if (escolha == 0) return;
+        if (escolha < 1 || escolha > restaurantes.size()) {
+            System.out.println("Opção inválida!");
+            System.out.println("\nPressione Enter para continuar...");
+            sc.nextLine();
+            return;
+        }
+        var restaurante = restaurantes.get(escolha - 1);
+        var cardapio = restaurante.getCardapio();
+        if (cardapio == null || cardapio.getItens() == null || cardapio.getItens().isEmpty()) {
+            System.out.println("Este restaurante não possui cardápio cadastrado.");
+        } else {
+            System.out.println("\n--- Cardápio de " + restaurante.getRazaoSocial() + " ---");
+            for (int i = 0; i < cardapio.getItens().size(); i++) {
+                var item = cardapio.getItens().get(i);
+                System.out.println((i + 1) + ". " + item.getNome() + " - R$ " + String.format("%.2f", item.getPreco()));
+                if (item.getDescricao() != null && !item.getDescricao().isEmpty()) {
+                    System.out.println("   " + item.getDescricao());
+                }
+            }
+            System.out.println("\nTaxa de entrega: R$ " + String.format("%.2f", cardapio.getTaxaEntrega()));
+            System.out.println("Tempo estimado de entrega: " + cardapio.getTempoEstimadoMinutos() + " min");
+        }
+        System.out.println("\nPressione Enter para continuar...");
+        sc.nextLine();
     }
 
     private void cadastrarMetodoPagamento() {
@@ -195,9 +247,9 @@ public class MenuPassageiroCLI {
         System.out.println("======================================");
 
         // Usar o novo serviço de histórico integrado
-        com.uberpb.services.HistoricoService historicoService = 
+        com.uberpb.services.HistoricoService historicoService =
             new com.uberpb.services.HistoricoService(new com.uberpb.repository.DatabaseManager());
-        
+
         List<com.uberpb.model.HistoricoItem> historico = historicoService.gerarHistoricoPassageiro(passageiro.getId());
 
         if (historico.isEmpty()) {
@@ -219,7 +271,7 @@ public class MenuPassageiroCLI {
                 String categoriaFiltro = sc.nextLine().trim();
 
                 historicoFiltrado = historico.stream()
-                    .filter(item -> item.getCategoria() != null && 
+                    .filter(item -> item.getCategoria() != null &&
                            item.getCategoria().getNome().equalsIgnoreCase(categoriaFiltro))
                     .toList();
 
@@ -234,12 +286,12 @@ public class MenuPassageiroCLI {
             historicoFiltrado.forEach(item -> {
                 System.out.println("\n" + item.formatarParaExibicao() + "\n");
             });
-            
+
             System.out.println("========================================");
-            System.out.println("Total de corridas" + 
-                (historicoFiltrado.size() != historico.size() ? " (filtradas)" : "") + 
+            System.out.println("Total de corridas" +
+                (historicoFiltrado.size() != historico.size() ? " (filtradas)" : "") +
                 ": " + historicoFiltrado.size());
-            
+
             // Estatísticas resumidas
             if (!historicoFiltrado.isEmpty()) {
                 double valorTotal = historicoFiltrado.stream()
@@ -248,7 +300,7 @@ public class MenuPassageiroCLI {
                 long corridasAvaliadas = historicoFiltrado.stream()
                     .mapToLong(item -> item.isCorridaAvaliada() ? 1 : 0)
                     .sum();
-                
+
                 System.out.println("\n=== RESUMO ===");
                 System.out.println("Valor total gasto: R$ " + String.format("%.2f", valorTotal));
                 System.out.println("Corridas avaliadas: " + corridasAvaliadas + "/" + historicoFiltrado.size());
@@ -371,20 +423,20 @@ public class MenuPassageiroCLI {
 
     private void gerarReciboCorrida() {
         System.out.println("\n=== Gerar Recibo de Corrida ===");
-        
+
         ReciboService reciboService = new ReciboService();
         var corridasFinalizadas = reciboService.listarCorridasFinalizadasDoPassageiro(passageiro.getId());
-        
+
         if (corridasFinalizadas.isEmpty()) {
             System.out.println("Você não possui corridas finalizadas para gerar recibo.");
             System.out.println("\nPressione Enter para voltar...");
             sc.nextLine();
             return;
         }
-        
+
         System.out.println("\nCorridas Finalizadas Disponíveis:");
         System.out.println("===============================");
-        
+
         for (int i = 0; i < corridasFinalizadas.size(); i++) {
             Corrida corrida = corridasFinalizadas.get(i);
             System.out.println((i + 1) + ". " + corrida.getOrigem() + " -> " + corrida.getDestino());
@@ -396,43 +448,43 @@ public class MenuPassageiroCLI {
             }
             System.out.println("   --------------------------------");
         }
-        
+
         System.out.print("\nEscolha o número da corrida para gerar o recibo (0 para cancelar): ");
         int escolha = sc.nextInt();
         sc.nextLine();
-        
+
         if (escolha == 0) {
             return;
         }
-        
+
         if (escolha < 1 || escolha > corridasFinalizadas.size()) {
             System.out.println("Opção inválida!");
             System.out.println("\nPressione Enter para voltar...");
             sc.nextLine();
             return;
         }
-        
+
         Corrida corridaEscolhida = corridasFinalizadas.get(escolha - 1);
-        
+
         System.out.println("\nGerando recibo da corrida " + corridaEscolhida.getOrigem() + " -> " + corridaEscolhida.getDestino());
         System.out.println("===============================");
-        
+
         boolean sucesso = reciboService.exibirRecibo(corridaEscolhida.getId());
-        
+
         if (sucesso) {
             System.out.println("\nDeseja salvar o recibo em arquivo? (s/n): ");
             String resposta = sc.nextLine().trim().toLowerCase();
-            
+
             if (resposta.equals("s") || resposta.equals("sim")) {
                 System.out.print("Digite o nome do arquivo (deixe vazio para nome padrão): ");
                 String nomeArquivo = sc.nextLine().trim();
-                
+
                 if (nomeArquivo.isEmpty()) {
                     nomeArquivo = null;
                 }
-                
+
                 boolean salvo = reciboService.salvarReciboEmArquivo(corridaEscolhida.getId(), nomeArquivo);
-                
+
                 if (salvo) {
                     System.out.println("Recibo salvo com sucesso!");
                 } else {
@@ -442,7 +494,7 @@ public class MenuPassageiroCLI {
         } else {
             System.out.println("Erro ao gerar recibo.");
         }
-        
+
         System.out.println("\nPressione Enter para voltar...");
         sc.nextLine();
     }

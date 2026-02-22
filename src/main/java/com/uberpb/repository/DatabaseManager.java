@@ -1,5 +1,6 @@
 package com.uberpb.repository;
 
+import com.uberpb.enums.StatusPedido;
 import com.uberpb.model.*;
 import com.uberpb.repository.json.*;
 
@@ -26,8 +27,10 @@ public class DatabaseManager {
     private final HistoricoRepository historicoRepository;
     private final EntregadorRepositoryJSON entregadorRepository;
     private final RestauranteRepositoryJSON restauranteRepository;
+    public final PedidoRepositoryJSON pedidoRepository;
 
     public DatabaseManager() {
+        this.pedidoRepository = new PedidoRepositoryJSON();
         this.userRepository = new UserRepositoryJSON();
         this.passageiroRepository = new PassageiroRepositoryJSON();
         this.motoristaRepository = new MotoristaRepositoryJSON();
@@ -38,6 +41,43 @@ public class DatabaseManager {
         this.historicoRepository = new HistoricoRepository();
         this.entregadorRepository = new EntregadorRepositoryJSON();
         this.restauranteRepository = new RestauranteRepositoryJSON();
+    }
+
+    public Pedido savePedido(Pedido pedido) {
+        return pedidoRepository.save(pedido);
+    }
+
+    public List<Pedido> findAllPedidos() {
+        return pedidoRepository.findAll();
+    }
+
+    public List<Entregador> findEntregadoresDisponiveis() {
+        return entregadorRepository.findDisponiveis();
+    }
+
+    public Pedido updatePedido(Pedido pedido) {
+        return pedidoRepository.update(pedido);
+    }
+
+    public List<Pedido> findPedidosByRestaurante(int restauranteId) {
+        return pedidoRepository.findAll()
+                .stream()
+                .filter(p -> p.getRestauranteId() == restauranteId)
+                .toList();
+    }
+
+    public List<Pedido> findPedidosAguardandoEntregador() {
+        return pedidoRepository.findAll()
+                .stream()
+                .filter(p -> p.getStatus() == StatusPedido.AGUARDANDO_ENTREGADOR)
+                .toList();
+    }
+
+    public List<Pedido> findPedidosByCliente(int clienteId) {
+        return pedidoRepository.findAll()
+                .stream()
+                .filter(p -> p.getPassageiroId() == clienteId)
+                .toList();
     }
 
     // ===== OPERAÇÕES DE USUÁRIO =====

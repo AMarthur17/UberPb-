@@ -51,6 +51,27 @@ public class EntregadorRepositoryJSON extends BaseRepository<Entregador> {
         }
     }
 
+    public List<Entregador> findAll() {
+        lock.readLock().lock();
+        try {
+            return loadAll();
+        } finally {
+            lock.readLock().unlock();
+        }
+    }
+
+    public List<Entregador> findDisponiveis() {
+        lock.readLock().lock();
+        try {
+            return loadAll().stream()
+                    .filter(Entregador::isDisponivel)
+                    .collect(Collectors.toList());
+        } finally {
+            lock.readLock().unlock();
+        }
+    }
+
+
     @Override
     protected int getId(Entregador entity) {
         return entity.getId();

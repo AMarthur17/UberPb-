@@ -14,5 +14,14 @@
   "aberto" : true,
   "avaliacoes" : [ ],
   "avaliacaoMedia" : 0.0,
-  "totalAvaliacoes" : 0
+  "totalAvaliacoes" : 0,
+  "cardapio" : {
+    "itens" : [ {
+      "nome" : "frango",
+      "preco" : 10.0,
+      "descricao" : "frito"
+    } ],
+    "taxaEntrega" : 20.0,
+    "tempoEstimadoMinutos" : 0
+  }
 } ]

@@ -20,7 +20,7 @@ public class Restaurante extends User {
         this.avaliacoes = new ArrayList<>();
         this.avaliacaoMedia = 0.0;
         this.totalAvaliacoes = 0;
-        this.cardapio = null;
+        this.cardapio = new Cardapio();
     }
 
     public String getCnpj() { return cnpj; }
