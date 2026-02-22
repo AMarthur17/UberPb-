@@ -296,3 +296,266 @@ OU
 7. **Validações Completas**: Prevenção de estados inconsistentes
 
 Este sistema representa uma implementação completa e funcional de uma plataforma de transporte por aplicativo, com algoritmos inteligentes de matching e uma arquitetura preparada para escalabilidade.
+## 🍔 Expansão UberEats – Módulo de Delivery
+
+### 📋 Visão Geral
+
+O sistema **UberPB** foi expandido para incluir um módulo completo de delivery, semelhante ao UberEats.
+
+Agora passageiros podem:
+
+- Realizar pedidos em restaurantes cadastrados
+- Acompanhar o status da preparação
+- Visualizar quando saiu para entrega
+- Receber o pedido por entregadores cadastrados
+
+A expansão mantém os mesmos princípios arquiteturais do módulo de corridas:
+
+- Persistência em JSON
+- Controle de estados via Enum
+- Separação por camadas (Model, Repository, CLI)
+- Regras de negócio centralizadas nas entidades
+
+
+## 🆕 Novas Entidades
+
+### 📦 Pedido
+
+Representa um pedido realizado por um passageiro.
+
+#### Principais Atributos
+
+- id
+- passageiroId
+- restauranteId
+- entregadorId
+- itens
+- taxaEntrega
+- valorTotal
+- status
+- dataCriacao
+
+
+### 🔄 Estados do Pedido (StatusPedido)
+
+- CRIADO
+- AGUARDANDO_RESTAURANTE
+- EM_PREPARO
+- AGUARDANDO_ENTREGADOR
+- EM_ENTREGA
+- ENTREGUE
+- CANCELADO
+
+
+### 📌 Regras Implementadas no Pedido
+
+- Pedido inicia com status `CRIADO`
+- Só é salvo após confirmação do cliente
+- Pedido não pode ser vazio
+- Valor total é calculado automaticamente
+- Status seguem fluxo controlado
+- Cliente só pode ter um pedido ativo por vez
+
+
+### 🧾 ItemPedido
+
+Relaciona um item do cardápio com sua quantidade dentro do pedido.
+
+#### Cálculo do Subtotal
+
+```
+subtotal = precoItem × quantidade
+```
+
+
+### 🛵 Entregador
+
+Novo perfil de usuário voltado para o módulo de delivery.
+
+#### Características
+
+- Tipo de veículo (Moto ou Bicicleta)
+- Controle de disponibilidade (Online/Offline)
+- Localização obrigatória para ficar online
+- Atribuição automática de pedidos
+- Sistema de avaliação
+
+
+## 🔄 Fluxo Completo do Pedido
+
+### 1️⃣ Criação do Pedido
+
+```
+Passageiro escolhe restaurante
+→ Seleciona itens
+→ Confirma pedido
+```
+
+Após confirmação:
+
+```
+Status → AGUARDANDO_RESTAURANTE
+```
+
+
+### 2️⃣ Aceite pelo Restaurante
+
+Quando o restaurante aceita:
+
+```
+Status → EM_PREPARO
+```
+
+
+### 3️⃣ Busca de Entregador
+
+Após preparo:
+
+```
+Status → AGUARDANDO_ENTREGADOR
+```
+
+#### Critérios de Seleção
+
+1. Entregador disponível
+2. Possui localização válida
+3. Está ativo no sistema
+
+#### Processo
+
+```java
+1. Buscar entregadores disponíveis
+2. Selecionar o primeiro elegível
+3. Atribuir entregador ao pedido
+4. Marcar entregador como indisponível
+```
+
+
+### 4️⃣ Entrega
+
+Quando o entregador sai para entrega:
+
+```
+Status → EM_ENTREGA
+```
+
+
+### 5️⃣ Finalização
+
+Ao concluir a entrega:
+
+```
+Status → ENTREGUE
+Entregador.disponivel = true
+```
+
+
+## 👤 Acompanhamento pelo Cliente
+
+### Novo recurso no Menu Passageiro
+
+```
+15 - Acompanhar meus pedidos
+```
+
+O cliente pode visualizar:
+
+- ID do pedido
+- Restaurante
+- Status atual
+- Valor total
+
+#### Exibição Descritiva dos Status
+
+- Aguardando confirmação
+- Em preparo
+- Aguardando entregador
+- Saiu para entrega
+- Pedido entregue
+
+
+## 🛵 Menu Entregador
+
+### Funcionalidades Disponíveis
+
+- Alternar disponibilidade (Online/Offline)
+- Atualizar localização
+- Visualizar pedidos disponíveis
+- Aceitar pedido
+- Finalizar entrega
+
+### Regras
+
+- Não pode ficar online sem localização definida
+- Ao aceitar pedido → fica indisponível
+- Ao finalizar → volta a ficar disponível
+
+
+## 💾 Persistência de Dados (Delivery)
+
+```
+database/
+├── pedidos/pedidos.json
+├── restaurantes/restaurantes.json
+├── entregadores/entregadores.json
+```
+
+### Relacionamentos por ID
+
+- pedido.passageiroId
+- pedido.restauranteId
+- pedido.entregadorId
+
+
+## 📏 Regras de Negócio Garantidas
+
+- Pedido não pode ser criado sem itens
+- Status seguem fluxo controlado
+- Entregador precisa de localização para operar
+- Entregador fica indisponível durante entrega
+- Cliente só visualiza seus próprios pedidos
+- Pedido não pode pular estados
+
+
+## 🧪 Testes Unitários
+
+### Classe Criada
+
+```
+PedidoTest.java
+```
+
+### Testes Implementados
+
+- Status inicial do pedido
+- Adição de itens
+- Remoção de itens
+- Cálculo de total com taxa de entrega
+- Alteração de status válida
+- Bloqueio de alteração inválida
+
+
+## 🔧 Novo Caso de Uso – Pedido Completo
+
+```
+1. Passageiro cria pedido
+2. Restaurante recebe notificação
+3. Restaurante aceita
+4. Sistema busca entregador disponível
+5. Entregador aceita
+6. Pedido entra em entrega
+7. Entrega finalizada
+8. Entregador volta a ficar disponível
+```
+
+
+## ✅ Resultado da Expansão
+
+O UberPB agora funciona como:
+
+- Plataforma de mobilidade
+- Plataforma de delivery
+- Sistema com controle de estados robusto
+- Persistência estruturada em JSON
+- Arquitetura organizada por camadas
+- Cobertura básica com testes unitários
