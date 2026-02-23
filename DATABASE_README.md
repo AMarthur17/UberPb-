@@ -16,6 +16,8 @@ database/
 │   └── entregadores.json   # Entregadores (Delivery)
 ├── restaurantes/
 │   └── restaurantes.json   # Restaurantes (Delivery)
+├── pedidos/
+│   └── pedidos.json        # Pedidos e Agendamentos do carrinho (Delivery)
 ├── veiculos/
 │   └── veiculos.json       # Veículos
 ├── corridas/
@@ -42,6 +44,10 @@ Quando você cadastra um motorista, ele é salvo em:
 ### 4. Cadastro de Veículo
 Quando você cadastra um veículo, ele é salvo em:
 - `database/veiculos/veiculos.json` - Dados do veículo
+
+### 5. Registro de Pedidos (Delivery)
+Quando um passageiro finaliza o seu carrinho de compras de comida, o sistema persiste o estado em:
+- `database/pedidos/pedidos.json` - Salva a estrutura completa (restaurante, itens, quantidades e o status).
 
 ## Exemplo de Uso
 

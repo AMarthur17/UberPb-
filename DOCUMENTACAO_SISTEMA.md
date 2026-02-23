@@ -30,6 +30,10 @@ O **UberPB** é um sistema multiplataforma de mobilidade e delivery desenvolvido
 - **Cadastro de Entregador**: Validação estrita de documentos (CNH/RG) e tipo de veículo (Moto ou Bicicleta).
 - **Cadastro de Restaurante**: Validação de CNPJ (14 dígitos) e gestão de status de funcionamento (Aberto/Fechado).
 - **Menus Específicos**: Gestão de disponibilidade e localização em tempo real para entregadores.
+- **Gestão de Pedidos e Carrinho**: Criação das entidades `Pedido`, `ItemPedido`, `Cardapio` e `Item`, permitindo a adição e remoção de produtos, com cálculo automático do valor total e taxa de entrega.
+- **Agendamento de Pedidos**: Suporte nativo para flexibilidade de entregas através do enumerador `TipoEntrega` (`IMEDIATO` ou `AGENDADO`). O sistema possui blindagem de regras de negócio, lançando exceções caso o usuário tente agendar uma entrega para uma data/hora no passado.
+- **Tratamento de Erros e Resiliência**: Os menus interativos (CLI) foram blindados com blocos `try-catch` para converter entradas de texto com segurança, evitando quebras (como `InputMismatchException` ou `DateTimeParseException`) durante a digitação do usuário.
+- **Qualidade de Software**: Cobertura de testes superior a 80% utilizando JUnit nas regras de negócio e validações das entidades de Delivery.
 
 ### 2. Gestão de Passageiros
 - ✅ Cadastro de métodos de pagamento
@@ -308,6 +312,7 @@ Agora passageiros podem:
 - Acompanhar o status da preparação
 - Visualizar quando saiu para entrega
 - Receber o pedido por entregadores cadastrados
+- Efetuar pedidos de forma imediata ou agendada
 
 A expansão mantém os mesmos princípios arquiteturais do módulo de corridas:
 
@@ -334,6 +339,7 @@ Representa um pedido realizado por um passageiro.
 - valorTotal
 - status
 - dataCriacao
+- tipo de entrega
 
 
 ### 🔄 Estados do Pedido (StatusPedido)
@@ -355,6 +361,7 @@ Representa um pedido realizado por um passageiro.
 - Valor total é calculado automaticamente
 - Status seguem fluxo controlado
 - Cliente só pode ter um pedido ativo por vez
+- O cliente pode optar pelo envio imediato ou agendado
 
 
 ### 🧾 ItemPedido
@@ -533,6 +540,10 @@ PedidoTest.java
 - Cálculo de total com taxa de entrega
 - Alteração de status válida
 - Bloqueio de alteração inválida
+- Agendamento de entrega futuro
+- Bloqueio de agendamentos no passado
+- Validação de informações dos cardápios 
+- Validações de requisitos para entregadores e serviços para delivery
 
 
 ## 🔧 Novo Caso de Uso – Pedido Completo
