@@ -72,8 +72,8 @@ public class TestCorridaRepositoryCompleto {
                 .forEach(c -> System.out.println(c.getId() + ": " + c.getOrigem() + " -> " + c.getDestino()));
 
         // ===== Testar findByCategoria =====
-        System.out.println("\n=== Corridas categoria LUXO ===");
-        corridaRepo.findByCategoria(Categoria.LUXO)
+        System.out.println("\n=== Corridas categoria BLACK ===");
+        corridaRepo.findByCategoria(Categoria.BLACK)
                 .forEach(c -> System.out.println(c.getId() + ": " + c.getOrigem() + " -> " + c.getDestino()));
 
         // ===== Testar update =====
@@ -84,7 +84,7 @@ public class TestCorridaRepositoryCompleto {
                 .forEach(c -> System.out.println(c.getId() + ": " + c.getOrigem() + " -> " + c.getDestino()));
 
         // ===== Testar delete =====
-        corridaRepo.delete(c3.getId());
+        corridaRepo.deleteById(c3.getId());
         System.out.println("\n=== Corridas após deletar c3 ===");
         corridaRepo.findAll()
                 .forEach(c -> System.out.println(c.getId() + ": " + c.getOrigem() + " -> " + c.getDestino()));

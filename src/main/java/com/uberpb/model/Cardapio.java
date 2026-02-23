@@ -18,6 +18,11 @@ public class Cardapio {
     public void setItens(List<Item> itens) { this.itens = itens; }
 
     public void adicionarItem(Item item) { this.itens.add(item); }
+    public void removerItem(Item item){
+        if (this.itens != null){
+            this.itens.remove(item);
+        }
+    }
 
     public double getTaxaEntrega() { return taxaEntrega; }
     public void setTaxaEntrega(double taxaEntrega) { this.taxaEntrega = taxaEntrega; }

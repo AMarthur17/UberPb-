@@ -28,4 +28,14 @@
   "telefone" : "83988542850",
   "tipo" : "usuario",
   "dataCadastro" : "16/10/2025 09:51:05"
+}, {
+  "id" : 4,
+  "username" : "Luiz",
+  "senha" : "Teste123",
+  "nome" : "LuizTeste",
+  "sobrenome" : "Testando",
+  "email" : "luiz@teste.com",
+  "telefone" : "83 99999 9999",
+  "tipo" : "usuario",
+  "dataCadastro" : "23/02/2026 00:43:17"
 } ]

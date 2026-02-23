@@ -1,8 +1,8 @@
 {
-  "users" : 3,
+  "users" : 4,
   "veiculos" : 2,
   "corridas" : 6,
-  "pagamentos" : 20,
-  "avaliacoes" : 58,
-  "pedidos" : 7
+  "pagamentos" : 60,
+  "avaliacoes" : 138,
+  "pedidos" : 9
 }

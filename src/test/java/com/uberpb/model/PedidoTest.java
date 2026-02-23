@@ -1,7 +1,10 @@
 package com.uberpb.model;
 
 import com.uberpb.enums.StatusPedido;
+import com.uberpb.enums.TipoEntrega;
 import org.junit.jupiter.api.Test;
+
+import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -63,5 +66,35 @@ public class PedidoTest {
         pedido.setStatus(StatusPedido.EM_PREPARO);
 
         assertEquals(StatusPedido.EM_PREPARO, pedido.getStatus());
+    }
+
+    @Test
+    void testCriacaoPedidoPadraoImediato() {
+        Pedido pedido = new Pedido();
+        assertEquals(TipoEntrega.IMEDIATO, pedido.getTipoEntrega());
+        assertNull(pedido.getDataAgendamento());
+    }
+
+    @Test
+    void testAgendamentoValido() {
+        Pedido pedido = new Pedido();
+        LocalDateTime dataFutura = LocalDateTime.now().plusDays(2);
+
+        pedido.agendarPara(dataFutura);
+
+        assertEquals(TipoEntrega.AGENDADO, pedido.getTipoEntrega());
+        assertEquals(dataFutura, pedido.getDataAgendamento());
+    }
+
+    @Test
+    void testAgendamentoDataPassadaLancaExcecao() {
+        Pedido pedido = new Pedido();
+        LocalDateTime dataPassada = LocalDateTime.now().minusDays(1);
+
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            pedido.agendarPara(dataPassada);
+        });
+
+        assertEquals("Erro: A data de agendamento não pode estar no passado.", exception.getMessage());
     }
 }

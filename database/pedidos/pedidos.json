@@ -1,0 +1,41 @@
+[ {
+  "id" : 8,
+  "passageiroId" : 4,
+  "restauranteId" : 1,
+  "entregadorId" : null,
+  "itens" : [ {
+    "item" : {
+      "nome" : "frango",
+      "preco" : 10.0,
+      "descricao" : "frito"
+    },
+    "quantidade" : 3,
+    "subtotal" : 30.0
+  } ],
+  "taxaEntrega" : 20.0,
+  "valorTotal" : 50.0,
+  "status" : "AGUARDANDO_RESTAURANTE",
+  "dataCriacao" : "2026-02-23T00:44:42.0656433",
+  "tipoEntrega" : "IMEDIATO",
+  "dataAgendamento" : null
+}, {
+  "id" : 9,
+  "passageiroId" : 4,
+  "restauranteId" : 1,
+  "entregadorId" : null,
+  "itens" : [ {
+    "item" : {
+      "nome" : "frango",
+      "preco" : 10.0,
+      "descricao" : "frito"
+    },
+    "quantidade" : 1,
+    "subtotal" : 10.0
+  } ],
+  "taxaEntrega" : 20.0,
+  "valorTotal" : 30.0,
+  "status" : "AGUARDANDO_RESTAURANTE",
+  "dataCriacao" : "2026-02-23T00:45:14.9859483",
+  "tipoEntrega" : "AGENDADO",
+  "dataAgendamento" : "2026-02-23T03:00:00"
+} ]

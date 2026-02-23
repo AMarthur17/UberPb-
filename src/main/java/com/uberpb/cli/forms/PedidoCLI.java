@@ -1,9 +1,14 @@
 package com.uberpb.cli.forms;
 
+import com.uberpb.enums.TipoEntrega;
+import com.uberpb.model.Pedido;
 import com.uberpb.model.*;
 import com.uberpb.repository.DatabaseManager;
 
 import java.util.List;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Scanner;
 
 import com.uberpb.enums.StatusPedido;
@@ -70,8 +75,13 @@ public class PedidoCLI {
             System.out.println("0 - Finalizar Pedido");
             System.out.print("Escolha item: ");
 
-            int escolhaItem = sc.nextInt();
-            sc.nextLine();
+            int escolhaItem = -1;
+            try {
+                escolhaItem = Integer.parseInt(sc.nextLine());
+            } catch (NumberFormatException e) {
+                System.out.println("Por favor, digite apenas números válidos.");
+                continue;
+            }
 
             if (escolhaItem == 0)
                 break;
@@ -111,6 +121,8 @@ public class PedidoCLI {
 
         System.out.println("Total: R$ " +
                 String.format("%.2f", pedido.getValorTotal()));
+
+        configurarEntrega(pedido, sc);
 
         System.out.print("Confirmar pedido? (s/n): ");
         String confirmar = sc.nextLine().toLowerCase();
@@ -162,5 +174,39 @@ public class PedidoCLI {
 
         System.out.println("🚴 Entregador atribuído: " +
                 entregador.getNome());
+    }
+
+    private void configurarEntrega(Pedido pedido, Scanner scanner) {
+        System.out.println("\n=== TIPO DE ENTREGA ===");
+        System.out.println("1 - Entrega Imediata");
+        System.out.println("2 - Agendar Entrega");
+        System.out.print("Escolha uma opção: ");
+
+        String opcao = scanner.nextLine();
+
+        if (opcao.equals("2")) {
+            boolean dataValida = false;
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+
+            while (!dataValida) {
+                try {
+                    System.out.print("Digite a data e hora (Ex: 25/12/2025 20:30): ");
+                    String dataStr = scanner.nextLine();
+                    LocalDateTime dataAgendada = LocalDateTime.parse(dataStr, formatter);
+
+                    pedido.agendarPara(dataAgendada);
+                    System.out.println("Pedido agendado para: " + dataStr);
+                    dataValida = true;
+
+                } catch (DateTimeParseException e) {
+                    System.out.println("Formato inválido. Use o formato dd/MM/yyyy HH:mm");
+                } catch (IllegalArgumentException e) {
+                    System.out.println(e.getMessage());
+                }
+            }
+        } else {
+            pedido.setTipoEntrega(TipoEntrega.IMEDIATO);
+            System.out.println("Pedido configurado para entrega imediata.");
+        }
     }
 }

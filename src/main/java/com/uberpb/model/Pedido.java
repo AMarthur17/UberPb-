@@ -1,6 +1,7 @@
 package com.uberpb.model;
 
 import com.uberpb.enums.StatusPedido;
+import com.uberpb.enums.TipoEntrega;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -20,11 +21,14 @@ public class Pedido {
     private StatusPedido status; // usando enum correto
 
     private LocalDateTime dataCriacao;
+    private TipoEntrega tipoEntrega;
+    private LocalDateTime dataAgendamento;
 
     public Pedido() {
         this.itens = new ArrayList<>();
         this.status = StatusPedido.CRIADO;
         this.dataCriacao = LocalDateTime.now();
+        this.tipoEntrega = TipoEntrega.IMEDIATO;
     }
 
     public void adicionarItem(Item item, int quantidade) {
@@ -43,6 +47,14 @@ public class Pedido {
             soma += ip.getSubtotal();
         }
         this.valorTotal = soma + taxaEntrega;
+    }
+
+    public void agendarPara(LocalDateTime dataFutura){
+        if (dataFutura.isBefore(LocalDateTime.now())){
+            throw new IllegalArgumentException("Erro: A data de agendamento não pode estar no passado.");
+        }
+        this.tipoEntrega = TipoEntrega.AGENDADO;
+        this.dataAgendamento = dataFutura;
     }
 
     public int getId() {
@@ -111,5 +123,21 @@ public class Pedido {
 
     public List<ItemPedido> getItens() {
         return itens;
+    }
+
+    public TipoEntrega getTipoEntrega() {
+        return tipoEntrega;
+    }
+
+    public void setTipoEntrega(TipoEntrega tipoEntrega) {
+        this.tipoEntrega = tipoEntrega;
+    }
+
+    public LocalDateTime getDataAgendamento() {
+        return dataAgendamento;
+    }
+
+    public void setDataAgendamento(LocalDateTime dataAgendamento) {
+        this.dataAgendamento = dataAgendamento;
     }
 }

@@ -7,7 +7,7 @@
   "placa" : "ABC1234",
   "categoria" : "Comfort",
   "veiculoNovo" : true,
-  "idadeVeiculo" : 0,
+  "idadeVeiculo" : 1,
   "capacidadePortaMalas" : 200.0,
   "numeroPassageiros" : 4
 }, {
@@ -19,7 +19,7 @@
   "placa" : "NAQ6034",
   "categoria" : "XL",
   "veiculoNovo" : false,
-  "idadeVeiculo" : 4,
+  "idadeVeiculo" : 5,
   "capacidadePortaMalas" : 700.0,
   "numeroPassageiros" : 6
 }, {
@@ -31,7 +31,7 @@
   "placa" : "TST-4760",
   "categoria" : "UBER_X",
   "veiculoNovo" : false,
-  "idadeVeiculo" : 5,
+  "idadeVeiculo" : 6,
   "capacidadePortaMalas" : 300.0,
   "numeroPassageiros" : 4
 }, {
@@ -43,7 +43,7 @@
   "placa" : "TST-3955",
   "categoria" : "UBER_X",
   "veiculoNovo" : false,
-  "idadeVeiculo" : 5,
+  "idadeVeiculo" : 6,
   "capacidadePortaMalas" : 300.0,
   "numeroPassageiros" : 4
 }, {
@@ -55,7 +55,7 @@
   "placa" : "TST-8887",
   "categoria" : "UBER_X",
   "veiculoNovo" : false,
-  "idadeVeiculo" : 5,
+  "idadeVeiculo" : 6,
   "capacidadePortaMalas" : 300.0,
   "numeroPassageiros" : 4
 }, {
@@ -67,7 +67,127 @@
   "placa" : "TST-2669",
   "categoria" : "UBER_X",
   "veiculoNovo" : false,
-  "idadeVeiculo" : 5,
+  "idadeVeiculo" : 6,
+  "capacidadePortaMalas" : 300.0,
+  "numeroPassageiros" : 4
+}, {
+  "id" : 9785,
+  "modelo" : "HB20",
+  "marca" : "Hyundai",
+  "ano" : 2020,
+  "cor" : "Preto",
+  "placa" : "TST-9783",
+  "categoria" : "UBER_X",
+  "veiculoNovo" : false,
+  "idadeVeiculo" : 6,
+  "capacidadePortaMalas" : 300.0,
+  "numeroPassageiros" : 4
+}, {
+  "id" : 9353,
+  "modelo" : "HB20",
+  "marca" : "Hyundai",
+  "ano" : 2020,
+  "cor" : "Preto",
+  "placa" : "TST-6351",
+  "categoria" : "UBER_X",
+  "veiculoNovo" : false,
+  "idadeVeiculo" : 6,
+  "capacidadePortaMalas" : 300.0,
+  "numeroPassageiros" : 4
+}, {
+  "id" : 9005,
+  "modelo" : "HB20",
+  "marca" : "Hyundai",
+  "ano" : 2020,
+  "cor" : "Preto",
+  "placa" : "TST-0003",
+  "categoria" : "UBER_X",
+  "veiculoNovo" : false,
+  "idadeVeiculo" : 6,
+  "capacidadePortaMalas" : 300.0,
+  "numeroPassageiros" : 4
+}, {
+  "id" : 9932,
+  "modelo" : "HB20",
+  "marca" : "Hyundai",
+  "ano" : 2020,
+  "cor" : "Preto",
+  "placa" : "TST-1930",
+  "categoria" : "UBER_X",
+  "veiculoNovo" : false,
+  "idadeVeiculo" : 6,
+  "capacidadePortaMalas" : 300.0,
+  "numeroPassageiros" : 4
+}, {
+  "id" : 9948,
+  "modelo" : "HB20",
+  "marca" : "Hyundai",
+  "ano" : 2020,
+  "cor" : "Preto",
+  "placa" : "TST-1946",
+  "categoria" : "UBER_X",
+  "veiculoNovo" : false,
+  "idadeVeiculo" : 6,
+  "capacidadePortaMalas" : 300.0,
+  "numeroPassageiros" : 4
+}, {
+  "id" : 9251,
+  "modelo" : "HB20",
+  "marca" : "Hyundai",
+  "ano" : 2020,
+  "cor" : "Preto",
+  "placa" : "TST-2249",
+  "categoria" : "UBER_X",
+  "veiculoNovo" : false,
+  "idadeVeiculo" : 6,
+  "capacidadePortaMalas" : 300.0,
+  "numeroPassageiros" : 4
+}, {
+  "id" : 9688,
+  "modelo" : "HB20",
+  "marca" : "Hyundai",
+  "ano" : 2020,
+  "cor" : "Preto",
+  "placa" : "TST-6686",
+  "categoria" : "UBER_X",
+  "veiculoNovo" : false,
+  "idadeVeiculo" : 6,
+  "capacidadePortaMalas" : 300.0,
+  "numeroPassageiros" : 4
+}, {
+  "id" : 9379,
+  "modelo" : "HB20",
+  "marca" : "Hyundai",
+  "ano" : 2020,
+  "cor" : "Preto",
+  "placa" : "TST-8377",
+  "categoria" : "UBER_X",
+  "veiculoNovo" : false,
+  "idadeVeiculo" : 6,
+  "capacidadePortaMalas" : 300.0,
+  "numeroPassageiros" : 4
+}, {
+  "id" : 9474,
+  "modelo" : "HB20",
+  "marca" : "Hyundai",
+  "ano" : 2020,
+  "cor" : "Preto",
+  "placa" : "TST-7472",
+  "categoria" : "UBER_X",
+  "veiculoNovo" : false,
+  "idadeVeiculo" : 6,
+  "capacidadePortaMalas" : 300.0,
+  "numeroPassageiros" : 4
+}, {
+  "id" : 9067,
+  "modelo" : "HB20",
+  "marca" : "Hyundai",
+  "ano" : 2020,
+  "cor" : "Preto",
+  "placa" : "TST-6065",
+  "categoria" : "UBER_X",
+  "veiculoNovo" : false,
+  "idadeVeiculo" : 6,
   "capacidadePortaMalas" : 300.0,
   "numeroPassageiros" : 4
 } ]
