@@ -16,6 +16,7 @@ public class Pedido {
 
     private List<ItemPedido> itens;
     private double taxaEntrega;
+    private double tarifaDinamica;
     private double valorTotal;
 
     private StatusPedido status; // usando enum correto
@@ -29,6 +30,7 @@ public class Pedido {
         this.status = StatusPedido.CRIADO;
         this.dataCriacao = LocalDateTime.now();
         this.tipoEntrega = TipoEntrega.IMEDIATO;
+        this.tarifaDinamica = 1.0;
     }
 
     public void adicionarItem(Item item, int quantidade) {
@@ -46,7 +48,8 @@ public class Pedido {
         for (ItemPedido ip : itens) {
             soma += ip.getSubtotal();
         }
-        this.valorTotal = soma + taxaEntrega;
+        double taxaFinal = taxaEntrega * tarifaDinamica;
+        this.valorTotal = soma + taxaFinal;
     }
 
     public void agendarPara(LocalDateTime dataFutura){
@@ -139,5 +142,13 @@ public class Pedido {
 
     public void setDataAgendamento(LocalDateTime dataAgendamento) {
         this.dataAgendamento = dataAgendamento;
+    }
+
+    public double getTarifaDinamica() {
+        return tarifaDinamica;
+    }
+
+    public void setTarifaDinamica(double tarifaDinamica) {
+        this.tarifaDinamica = tarifaDinamica;
     }
 }

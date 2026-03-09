@@ -58,4 +58,16 @@ public class EstimativaService {
         int distancia = localizacaoService.calcularDistancia(nomeOrigem, nomeDestino);
         return distancia / 10.0; // Convertendo unidades para km (10 unidades = 1 km)
     }
+
+    public double calcularTarifaDinamicaDelivery() {
+        // Simulação simples: 30% de chance de ter tarifa dinâmica (entre 1.1x e 1.5x)
+        boolean altaDemanda = Math.random() < 0.3;
+
+        if (altaDemanda) {
+            double multiplicador = 1.1 + (Math.random() * 0.4);
+            return Math.round(multiplicador * 10.0) / 10.0;
+        }
+
+        return 1.0; // Sem tarifa dinâmica
+    }
 }

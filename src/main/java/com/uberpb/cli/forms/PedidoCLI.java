@@ -4,6 +4,7 @@ import com.uberpb.enums.TipoEntrega;
 import com.uberpb.model.Pedido;
 import com.uberpb.model.*;
 import com.uberpb.repository.DatabaseManager;
+import com.uberpb.services.EstimativaService;
 
 import java.util.List;
 import java.time.LocalDateTime;
@@ -106,6 +107,9 @@ public class PedidoCLI {
             System.out.println("Pedido vazio. Cancelado.");
             return;
         }
+        EstimativaService estimativaService = new EstimativaService();
+        double tarifaDinamica = estimativaService.calcularTarifaDinamicaDelivery();
+        pedido.setTarifaDinamica(tarifaDinamica);
 
         pedido.calcularTotal();
 
@@ -116,11 +120,17 @@ public class PedidoCLI {
                     " = R$ " + String.format("%.2f", ip.getSubtotal()));
         }
 
-        System.out.println("Taxa entrega: R$ " +
-                String.format("%.2f", pedido.getTaxaEntrega()));
+        System.out.println("Taxa entrega base: R$ " + String.format("%.2f", restaurante.getCardapio().getTaxaEntrega()));
 
-        System.out.println("Total: R$ " +
-                String.format("%.2f", pedido.getValorTotal()));
+        if (tarifaDinamica > 1.0) {
+            System.out.println("⚠️ TARIFA DINÂMICA ATIVA (" + tarifaDinamica + "x) - Alta demanda na região!");
+            double taxaFinal = restaurante.getCardapio().getTaxaEntrega() * tarifaDinamica;
+            System.out.println("Taxa entrega com dinâmica: R$ " + String.format("%.2f", taxaFinal));
+        } else {
+            System.out.println("Taxa entrega final: R$ " + String.format("%.2f", pedido.getTaxaEntrega()));
+        }
+
+        System.out.println("Total a Pagar: R$ " + String.format("%.2f", pedido.getValorTotal()));
 
         configurarEntrega(pedido, sc);
 
