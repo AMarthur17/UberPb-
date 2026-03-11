@@ -86,8 +86,9 @@ public class MenuRestauranteCLI {
         System.out.println("\n=== Gerenciar Pedido #" + pedido.getId() + " ===");
         System.out.println("Status atual: " + pedido.getStatus());
 
-        System.out.println("1 - Aceitar pedido");
-        System.out.println("2 - Finalizar preparo");
+        System.out.println("1 - Confirmar (aceitar) pedido");
+        System.out.println("2 - Rejeitar pedido");
+        System.out.println("3 - Finalizar preparo");
         System.out.println("9 - Voltar");
 
         int op = sc.nextInt();
@@ -98,13 +99,21 @@ public class MenuRestauranteCLI {
                 if (pedido.getStatus() == StatusPedido.AGUARDANDO_RESTAURANTE) {
                     pedido.setStatus(StatusPedido.EM_PREPARO);
                     db.updatePedido(pedido);
-                    System.out.println("✅ Pedido aceito. Agora está EM_PREPARO.");
+                    System.out.println("✅ Pedido confirmado. Agora está EM_PREPARO.");
                 } else {
-                    System.out.println("Pedido não pode ser aceito neste status.");
+                    System.out.println("Pedido não pode ser confirmado neste status.");
                 }
             }
-
             case 2 -> {
+                if (pedido.getStatus() == StatusPedido.AGUARDANDO_RESTAURANTE) {
+                    pedido.setStatus(StatusPedido.CANCELADO);
+                    db.updatePedido(pedido);
+                    System.out.println("❌ Pedido rejeitado e cancelado.");
+                } else {
+                    System.out.println("Pedido não pode ser rejeitado neste status.");
+                }
+            }
+            case 3 -> {
                 if (pedido.getStatus() == StatusPedido.EM_PREPARO) {
                     pedido.setStatus(StatusPedido.AGUARDANDO_ENTREGADOR);
                     db.updatePedido(pedido);
@@ -113,9 +122,7 @@ public class MenuRestauranteCLI {
                     System.out.println("Pedido ainda não está em preparo.");
                 }
             }
-
             case 9 -> { return; }
-
             default -> System.out.println("Opção inválida.");
         }
     }

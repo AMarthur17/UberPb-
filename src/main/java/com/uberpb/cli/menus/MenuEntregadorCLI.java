@@ -115,13 +115,12 @@ public class MenuEntregadorCLI {
 
         for (int i = 0; i < pedidos.size(); i++) {
             Pedido p = pedidos.get(i);
-
             System.out.println((i + 1) + " - Pedido #" + p.getId()
                     + " | Total: R$ "
                     + String.format("%.2f", p.getValorTotal()));
         }
 
-        System.out.print("\nEscolha o número para aceitar (0 para voltar): ");
+        System.out.print("\nEscolha o número do pedido (0 para voltar): ");
         int escolha = sc.nextInt();
         sc.nextLine();
 
@@ -134,12 +133,26 @@ public class MenuEntregadorCLI {
 
         Pedido pedido = pedidos.get(escolha - 1);
 
-        pedido.setEntregadorId(entregador.getId());
-        pedido.setStatus(StatusPedido.EM_ENTREGA);
+        System.out.println("1 - Aceitar pedido");
+        System.out.println("2 - Recusar pedido");
+        System.out.print("Escolha: ");
+        int acao = sc.nextInt();
+        sc.nextLine();
 
-        db.updatePedido(pedido);
-
-        System.out.println("🚚 Pedido aceito! Agora está EM_ENTREGA.");
+        if (acao == 1) {
+            pedido.setEntregadorId(entregador.getId());
+            pedido.setStatus(StatusPedido.EM_ENTREGA);
+            db.updatePedido(pedido);
+            System.out.println("🚚 Pedido aceito! Agora está EM_ENTREGA.");
+        } else if (acao == 2) {
+            // Mantém status como AGUARDANDO_ENTREGADOR e não atribui entregador
+            pedido.setEntregadorId(null);
+            pedido.setStatus(StatusPedido.AGUARDANDO_ENTREGADOR);
+            db.updatePedido(pedido);
+            System.out.println("Pedido recusado. Voltou para a lista de disponíveis.");
+        } else {
+            System.out.println("Opção inválida.");
+        }
     }
 
     private void verPedidoAtual() {
