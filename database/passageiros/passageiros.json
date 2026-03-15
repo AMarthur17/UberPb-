@@ -304,4 +304,38 @@
   "emCorrida" : false,
   "idade" : 23,
   "totalAvaliacoes" : 0
+}, {
+  "id" : 5,
+  "username" : "teste",
+  "senha" : "A123456",
+  "nome" : "teste123",
+  "sobrenome" : "teste",
+  "email" : "teste@gmail.com",
+  "telefone" : "83999336641",
+  "tipo" : "passageiro",
+  "dataCadastro" : "11/03/2026 18:58:10",
+  "avaliacaoMedia" : 0.0,
+  "avaliacoes" : [ ],
+  "historicoCorridas" : [ ],
+  "localizacaoAtual" : "Nao definida",
+  "emCorrida" : false,
+  "idade" : 20,
+  "totalAvaliacoes" : 0
+}, {
+  "id" : 6,
+  "username" : "testeMotor",
+  "senha" : "A123456",
+  "nome" : "testeMotor",
+  "sobrenome" : "Motorista",
+  "email" : "teste2@gmail.com",
+  "telefone" : "83999336642",
+  "tipo" : "passageiro",
+  "dataCadastro" : "11/03/2026 19:02:57",
+  "avaliacaoMedia" : 0.0,
+  "avaliacoes" : [ ],
+  "historicoCorridas" : [ ],
+  "localizacaoAtual" : "Nao definida",
+  "emCorrida" : false,
+  "idade" : 20,
+  "totalAvaliacoes" : 0
 } ]

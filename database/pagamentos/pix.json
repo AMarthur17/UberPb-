@@ -19,4 +19,11 @@
   "tipoChave" : "EMAIL",
   "descricao" : "PIX Email",
   "ativo" : true
+}, {
+  "id" : 4,
+  "usuarioId" : 5,
+  "chave" : "11111111111",
+  "tipoChave" : "CPF",
+  "descricao" : "cpf",
+  "ativo" : true
 } ]

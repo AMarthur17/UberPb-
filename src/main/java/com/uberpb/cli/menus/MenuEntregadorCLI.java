@@ -1,7 +1,9 @@
 package com.uberpb.cli.menus;
 
 import com.uberpb.model.Entregador;
+import com.uberpb.model.Passageiro;
 import com.uberpb.model.Pedido;
+import com.uberpb.model.Restaurante;
 import com.uberpb.enums.StatusPedido;
 import com.uberpb.repository.DatabaseManager;
 import com.uberpb.services.LocalizacaoService;
@@ -145,7 +147,6 @@ public class MenuEntregadorCLI {
             db.updatePedido(pedido);
             System.out.println("🚚 Pedido aceito! Agora está EM_ENTREGA.");
         } else if (acao == 2) {
-            // Mantém status como AGUARDANDO_ENTREGADOR e não atribui entregador
             pedido.setEntregadorId(null);
             pedido.setStatus(StatusPedido.AGUARDANDO_ENTREGADOR);
             db.updatePedido(pedido);
@@ -177,7 +178,22 @@ public class MenuEntregadorCLI {
                 + " | Total: R$ "
                 + String.format("%.2f", pedido.getValorTotal()));
 
-        System.out.println("1 - Finalizar entrega");
+        // ===== VISUALIZAÇÃO DA ROTA =====
+        Restaurante restaurante = db.findRestauranteById(pedido.getRestauranteId()).orElse(null);
+        Passageiro cliente = db.findPassageiroById(pedido.getPassageiroId()).orElse(null);
+
+        if (restaurante != null && cliente != null) {
+
+            System.out.println("\n=== ROTA DA ENTREGA ===");
+
+            System.out.println("📍 Entregador: " + entregador.getLocalizacaoAtual());
+            System.out.println("   ↓");
+            System.out.println("🏪 Restaurante: " + restaurante.getEndereco());
+            System.out.println("   ↓");
+            System.out.println("👤 Cliente: " + cliente.getLocalizacaoAtual());
+        }
+
+        System.out.println("\n1 - Finalizar entrega");
         System.out.println("9 - Voltar");
 
         int op = sc.nextInt();
