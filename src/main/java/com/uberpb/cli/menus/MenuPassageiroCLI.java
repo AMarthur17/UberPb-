@@ -74,6 +74,7 @@ public class MenuPassageiroCLI {
                 case 15 -> {
                     return;
                 }
+                case 16 -> avaliarPedidoDelivery();
                 default -> System.out.println("Opcao invalida!");
             }
         }
@@ -419,6 +420,60 @@ public class MenuPassageiroCLI {
     private void solicitarCorrida() {
         SolicitarCorridaCLI menuSolicitar = new SolicitarCorridaCLI(sc, passageiro);
         menuSolicitar.exibirMenu();
+    }
+
+    private void avaliarPedidoDelivery() {
+        System.out.println("\n=== AVALIAR PEDIDO UBER EATS ===");
+
+        var pedidosEntregues = db.findPedidosByCliente(passageiro.getId()).stream()
+                .filter(p -> p.getStatus() == com.uberpb.enums.StatusPedido.ENTREGUE)
+                .toList();
+
+        if (pedidosEntregues.isEmpty()) {
+            System.out.println("Você não possui pedidos finalizados para avaliar no momento.");
+            return;
+        }
+
+        for (int i = 0; i < pedidosEntregues.size(); i++) {
+            var p = pedidosEntregues.get(i);
+            System.out.println((i + 1) + " - Pedido #" + p.getId() + " | Restaurante ID: " + p.getRestauranteId() + " | Entregador ID: " + p.getEntregadorId());
+        }
+
+        System.out.print("\nEscolha o número do pedido para avaliar (0 para cancelar): ");
+        int escolha = sc.nextInt();
+        sc.nextLine();
+
+        if (escolha < 1 || escolha > pedidosEntregues.size()) return;
+
+        com.uberpb.model.Pedido pedidoEscolhido = pedidosEntregues.get(escolha - 1);
+
+        // 1. Avaliando o Restaurante
+        var restauranteOpt = db.findRestauranteById(pedidoEscolhido.getRestauranteId());
+        if (restauranteOpt.isPresent()) {
+            var restaurante = restauranteOpt.get();
+            System.out.print("Dê uma nota de 1 a 5 para a comida do restaurante " + restaurante.getRazaoSocial() + ": ");
+            double notaRestaurante = sc.nextDouble();
+            sc.nextLine();
+
+            restaurante.adicionarAvaliacao((float) notaRestaurante);
+            db.updateRestaurante(restaurante);
+            System.out.println("✅ Restaurante avaliado com sucesso!");
+        }
+
+        if (pedidoEscolhido.getEntregadorId() != null && pedidoEscolhido.getEntregadorId() > 0) {
+            var entregadorOpt = db.findEntregadorById(pedidoEscolhido.getEntregadorId());
+            if (entregadorOpt.isPresent()) {
+                var entregador = entregadorOpt.get();
+                System.out.print("Dê uma nota de 1 a 5 para o motoboy " + entregador.getNome() + ": ");
+                double notaEntregador = sc.nextDouble();
+                sc.nextLine();
+
+                entregador.adicionarAvaliacao((float) notaEntregador);
+                db.updateEntregador(entregador);
+                System.out.println("✅ Entregador parceiro avaliado com sucesso!");
+            }
+        }
+        System.out.println("\nObrigado por ajudar a manter a qualidade do Uber Eats!");
     }
 
     private void gerarReciboCorrida() {

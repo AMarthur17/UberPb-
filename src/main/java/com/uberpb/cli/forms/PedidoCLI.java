@@ -140,6 +140,17 @@ public class PedidoCLI {
         if (confirmar.equals("s") || confirmar.equals("sim")) {
 
             pedido.setStatus(StatusPedido.AGUARDANDO_RESTAURANTE);
+            boolean isHorarioDePico = java.time.LocalTime.now().getHour() >= 18 && java.time.LocalTime.now().getHour() <= 21;
+            double taxaOriginal = pedido.getTaxaEntrega();
+
+            if (isHorarioDePico) {
+                double multiplicadorDinamico = 1.5; // 50% mais caro no horário de pico
+                double novaTaxa = taxaOriginal * multiplicadorDinamico;
+                pedido.setTaxaEntrega(novaTaxa);
+                System.out.println("\n⚠️ [TARIFA DINÂMICA ATIVA]: Devido ao horário de pico, a taxa de entrega passou de R$"
+                        + String.format("%.2f", taxaOriginal) + " para R$" + String.format("%.2f", novaTaxa));
+            }
+            pedido.calcularTotal();
             db.savePedido(pedido);
 
             System.out.println("📦 Pedido enviado ao restaurante!");

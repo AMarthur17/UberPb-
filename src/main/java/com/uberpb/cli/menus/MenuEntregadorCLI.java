@@ -106,7 +106,9 @@ public class MenuEntregadorCLI {
             return;
         }
 
-        List<Pedido> pedidos = db.findPedidosAguardandoEntregador();
+        List<Pedido> pedidos = db.findPedidosAguardandoEntregador().stream()
+                .filter(p -> p.getEntregadorId() != null && p.getEntregadorId() == entregador.getId())
+                .toList();
 
         if (pedidos.isEmpty()) {
             System.out.println("❌ Nenhum pedido disponível.");
@@ -144,6 +146,8 @@ public class MenuEntregadorCLI {
         if (acao == 1) {
             pedido.setEntregadorId(entregador.getId());
             pedido.setStatus(StatusPedido.EM_ENTREGA);
+            entregador.setDisponivel(false);
+            db.updateEntregador(entregador);
             db.updatePedido(pedido);
             System.out.println("🚚 Pedido aceito! Agora está EM_ENTREGA.");
         } else if (acao == 2) {
@@ -209,11 +213,19 @@ public class MenuEntregadorCLI {
         sc.nextLine();
 
         if (op == 1) {
-
             pedido.setStatus(StatusPedido.ENTREGUE);
+            entregador.setDisponivel(true);
+            db.updateEntregador(entregador);
             db.updatePedido(pedido);
-
             System.out.println("✅ Pedido entregue com sucesso!");
+            System.out.println("\n========================================");
+            System.out.println("🧾 RECIBO DE DELIVERY - UBER EATS");
+            System.out.println("Pedido #" + pedido.getId());
+            System.out.println("Status Final: " + pedido.getStatus());
+            System.out.println("Total da Compra: R$ " + String.format("%.2f", pedido.getValorTotal()));
+            System.out.println("Entregador Parceiro: " + entregador.getNome());
+            System.out.println("Data/Hora: " + java.time.LocalDateTime.now().format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")));
+            System.out.println("========================================\n");
         }
     }
 
