@@ -147,10 +147,19 @@ public class MenuEntregadorCLI {
             db.updatePedido(pedido);
             System.out.println("🚚 Pedido aceito! Agora está EM_ENTREGA.");
         } else if (acao == 2) {
-            pedido.setEntregadorId(null);
-            pedido.setStatus(StatusPedido.AGUARDANDO_ENTREGADOR);
+            pedido.setEntregadorId(0);
             db.updatePedido(pedido);
-            System.out.println("Pedido recusado. Voltou para a lista de disponíveis.");
+            System.out.println("❌ Pedido recusado. Passando para o próximo entregador...");
+
+            java.util.List<com.uberpb.model.Entregador> disponiveis = db.findEntregadoresDisponiveis().stream()
+                    .filter(e -> e.getId() != entregador.getId())
+                    .toList();
+
+            if (!disponiveis.isEmpty()) {
+                com.uberpb.model.Entregador proximo = disponiveis.getFirst();
+                pedido.setEntregadorId(proximo.getId());
+                db.updatePedido(pedido);
+            }
         } else {
             System.out.println("Opção inválida.");
         }

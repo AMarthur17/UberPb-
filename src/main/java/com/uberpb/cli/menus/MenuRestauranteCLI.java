@@ -1,12 +1,10 @@
 package com.uberpb.cli.menus;
 
 import com.uberpb.enums.StatusPedido;
-import com.uberpb.model.Cardapio;
-import com.uberpb.model.Item;
-import com.uberpb.model.Pedido;
-import com.uberpb.model.Restaurante;
+import com.uberpb.model.*;
 import com.uberpb.repository.DatabaseManager;
 
+import java.util.List;
 import java.util.Scanner;
 
 public class MenuRestauranteCLI {
@@ -97,11 +95,25 @@ public class MenuRestauranteCLI {
         switch (op) {
             case 1 -> {
                 if (pedido.getStatus() == StatusPedido.AGUARDANDO_RESTAURANTE) {
-                    pedido.setStatus(StatusPedido.EM_PREPARO);
-                    db.updatePedido(pedido);
-                    System.out.println("✅ Pedido confirmado. Agora está EM_PREPARO.");
-                } else {
-                    System.out.println("Pedido não pode ser confirmado neste status.");
+                    System.out.println("Aceitar pedido e iniciar preparo na cozinha? (s/n)");
+                    if (sc.nextLine().equalsIgnoreCase("s")) {
+                        pedido.setStatus(StatusPedido.EM_PREPARO);
+                        db.updatePedido(pedido);
+                        System.out.println("✅ Pedido movido para EM PREPARO.");
+                    }
+                } else if (pedido.getStatus() == StatusPedido.EM_PREPARO) {
+                    System.out.println("Comida pronta? Chamar entregador parceiro? (s/n)");
+                    if (sc.nextLine().equalsIgnoreCase("s")) {
+                        java.util.List<com.uberpb.model.Entregador> disponiveis = db.findEntregadoresDisponiveis();
+                        if (!disponiveis.isEmpty()) {
+                            pedido.setEntregadorId(disponiveis.getFirst().getId());
+                            pedido.setStatus(StatusPedido.AGUARDANDO_ENTREGADOR);
+                            db.updatePedido(pedido);
+                            System.out.println("✅ Entregador notificado!");
+                        } else {
+                            System.out.println("⚠️ Nenhum entregador disponível no momento.");
+                        }
+                    }
                 }
             }
             case 2 -> {

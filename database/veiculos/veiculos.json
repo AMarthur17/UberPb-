@@ -190,4 +190,40 @@
   "idadeVeiculo" : 6,
   "capacidadePortaMalas" : 300.0,
   "numeroPassageiros" : 4
+}, {
+  "id" : 9708,
+  "modelo" : "HB20",
+  "marca" : "Hyundai",
+  "ano" : 2020,
+  "cor" : "Preto",
+  "placa" : "TST-1706",
+  "categoria" : "UBER_X",
+  "veiculoNovo" : false,
+  "idadeVeiculo" : 6,
+  "capacidadePortaMalas" : 300.0,
+  "numeroPassageiros" : 4
+}, {
+  "id" : 9932,
+  "modelo" : "HB20",
+  "marca" : "Hyundai",
+  "ano" : 2020,
+  "cor" : "Preto",
+  "placa" : "TST-9930",
+  "categoria" : "UBER_X",
+  "veiculoNovo" : false,
+  "idadeVeiculo" : 6,
+  "capacidadePortaMalas" : 300.0,
+  "numeroPassageiros" : 4
+}, {
+  "id" : 9964,
+  "modelo" : "HB20",
+  "marca" : "Hyundai",
+  "ano" : 2020,
+  "cor" : "Preto",
+  "placa" : "TST-9962",
+  "categoria" : "UBER_X",
+  "veiculoNovo" : false,
+  "idadeVeiculo" : 6,
+  "capacidadePortaMalas" : 300.0,
+  "numeroPassageiros" : 4
 } ]
