@@ -27,7 +27,6 @@ public class MenuEntregadorCLI {
 
     public void exibirMenu() {
         while (true) {
-
             System.out.println("\n=== Menu Entregador ===");
             System.out.println("Veículo: " + entregador.getTipoVeiculo());
             System.out.println("Status: " + (entregador.isDisponivel() ? "🟢 ONLINE" : "🔴 OFFLINE"));
@@ -58,8 +57,7 @@ public class MenuEntregadorCLI {
     }
 
     private void alternarDisponibilidade() {
-
-        if (entregador.getLocalizacaoAtual().equals("Não definida")) {
+        if (entregador.getLocalizacaoAtual().equals("Não definida") || entregador.getLocalizacaoAtual().equals("Nao definida")) {
             System.out.println("Você precisa definir sua localização antes de ficar online!");
             return;
         }
@@ -72,7 +70,6 @@ public class MenuEntregadorCLI {
     }
 
     private void atualizarLocalizacao() {
-
         System.out.println("\n--- Atualizar Localização ---");
         localizacaoService.exibirLocalizacoes();
 
@@ -80,22 +77,17 @@ public class MenuEntregadorCLI {
         String novaLocalizacao = sc.nextLine().trim();
 
         if (localizacaoService.isLocalizacaoValida(novaLocalizacao)) {
-
             entregador.setLocalizacaoAtual(
                     localizacaoService.getNome(novaLocalizacao)
             );
-
             db.updateEntregador(entregador);
-
             System.out.println("Localização atualizada com sucesso!");
-
         } else {
             System.out.println("Localização inválida.");
         }
     }
 
     private void verPedidosDisponiveis() {
-
         if (!entregador.isDisponivel()) {
             System.out.println("❌ Você precisa estar ONLINE para ver pedidos.");
             return;
@@ -106,12 +98,13 @@ public class MenuEntregadorCLI {
             return;
         }
 
-        List<Pedido> pedidos = db.findPedidosAguardandoEntregador().stream()
-                .filter(p -> p.getEntregadorId() != null && p.getEntregadorId() == entregador.getId())
+        List<Pedido> pedidos = db.findAllPedidos().stream()
+                .filter(p -> p.getStatus() == StatusPedido.AGUARDANDO_ENTREGADOR)
+                .filter(p -> p.getEntregadorId() == null || p.getEntregadorId() == 0)
                 .toList();
 
         if (pedidos.isEmpty()) {
-            System.out.println("❌ Nenhum pedido disponível.");
+            System.out.println("❌ Nenhum pedido disponível no momento.");
             return;
         }
 
@@ -137,8 +130,9 @@ public class MenuEntregadorCLI {
 
         Pedido pedido = pedidos.get(escolha - 1);
 
+        System.out.println("\n--- Ação ---");
         System.out.println("1 - Aceitar pedido");
-        System.out.println("2 - Recusar pedido");
+        System.out.println("2 - Recusar (Voltar à lista)");
         System.out.print("Escolha: ");
         int acao = sc.nextInt();
         sc.nextLine();
@@ -147,30 +141,20 @@ public class MenuEntregadorCLI {
             pedido.setEntregadorId(entregador.getId());
             pedido.setStatus(StatusPedido.EM_ENTREGA);
             entregador.setDisponivel(false);
+
             db.updateEntregador(entregador);
             db.updatePedido(pedido);
-            System.out.println("🚚 Pedido aceito! Agora está EM_ENTREGA.");
+
+            System.out.println("🚚 Pedido aceito com sucesso! Agora está EM_ENTREGA.");
+            System.out.println("Vá para a opção '4 - Ver meu pedido atual' para detalhes.");
         } else if (acao == 2) {
-            pedido.setEntregadorId(0);
-            db.updatePedido(pedido);
-            System.out.println("❌ Pedido recusado. Passando para o próximo entregador...");
-
-            java.util.List<com.uberpb.model.Entregador> disponiveis = db.findEntregadoresDisponiveis().stream()
-                    .filter(e -> e.getId() != entregador.getId())
-                    .toList();
-
-            if (!disponiveis.isEmpty()) {
-                com.uberpb.model.Entregador proximo = disponiveis.getFirst();
-                pedido.setEntregadorId(proximo.getId());
-                db.updatePedido(pedido);
-            }
+            System.out.println("❌ Pedido ignorado.");
         } else {
             System.out.println("Opção inválida.");
         }
     }
 
     private void verPedidoAtual() {
-
         Pedido pedido = db.findAllPedidos()
                 .stream()
                 .filter(p ->
@@ -196,9 +180,7 @@ public class MenuEntregadorCLI {
         Passageiro cliente = db.findPassageiroById(pedido.getPassageiroId()).orElse(null);
 
         if (restaurante != null && cliente != null) {
-
             System.out.println("\n=== ROTA DA ENTREGA ===");
-
             System.out.println("📍 Entregador: " + entregador.getLocalizacaoAtual());
             System.out.println("   ↓");
             System.out.println("🏪 Restaurante: " + restaurante.getEndereco());
@@ -217,6 +199,7 @@ public class MenuEntregadorCLI {
             entregador.setDisponivel(true);
             db.updateEntregador(entregador);
             db.updatePedido(pedido);
+
             System.out.println("✅ Pedido entregue com sucesso!");
             System.out.println("\n========================================");
             System.out.println("🧾 RECIBO DE DELIVERY - UBER EATS");
@@ -230,7 +213,6 @@ public class MenuEntregadorCLI {
     }
 
     private boolean temPedidoEmEntrega() {
-
         return db.findAllPedidos()
                 .stream()
                 .anyMatch(p ->

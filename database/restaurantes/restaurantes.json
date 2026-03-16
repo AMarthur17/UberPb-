@@ -20,8 +20,38 @@
       "nome" : "frango",
       "preco" : 10.0,
       "descricao" : "frito"
+    }, {
+      "nome" : "Pizza",
+      "preco" : 40.0,
+      "descricao" : "Pizza de Frango"
     } ],
-    "taxaEntrega" : 20.0,
+    "taxaEntrega" : 5.0,
+    "tempoEstimadoMinutos" : 0
+  }
+}, {
+  "id" : 7,
+  "username" : "Manoel",
+  "senha" : "Teste123",
+  "nome" : "Manoel barros",
+  "sobrenome" : "da Cruz",
+  "email" : "manoel@gmail.com",
+  "telefone" : "11111111111",
+  "tipo" : "restaurante",
+  "dataCadastro" : "16/03/2026 10:39:44",
+  "cnpj" : "12345678901234",
+  "razaoSocial" : "Restaurante do Manoel",
+  "endereco" : "Centro",
+  "aberto" : true,
+  "avaliacoes" : [ ],
+  "avaliacaoMedia" : 0.0,
+  "totalAvaliacoes" : 0,
+  "cardapio" : {
+    "itens" : [ {
+      "nome" : "Pizza",
+      "preco" : 40.0,
+      "descricao" : "Pizza de Frango"
+    } ],
+    "taxaEntrega" : 5.0,
     "tempoEstimadoMinutos" : 0
   }
 } ]

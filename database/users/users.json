@@ -58,4 +58,14 @@
   "telefone" : "83999336642",
   "tipo" : "usuario",
   "dataCadastro" : "11/03/2026 19:02:57"
+}, {
+  "id" : 7,
+  "username" : "Manoel",
+  "senha" : "Teste123",
+  "nome" : "Manoel barros",
+  "sobrenome" : "da Cruz",
+  "email" : "manoel@gmail.com",
+  "telefone" : "11111111111",
+  "tipo" : "usuario",
+  "dataCadastro" : "16/03/2026 10:39:44"
 } ]
