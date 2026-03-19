@@ -51,7 +51,8 @@ public class MenuPassageiroCLI {
             System.out.println("12 - Listar restaurantes disponíveis");
             System.out.println("13 - Visualizar cardápio de restaurante");
             System.out.println("14 - Acompanhar meus pedidos (Uber Eats)");
-            System.out.println("15 - Voltar");
+            System.out.println("15 - Avaliar Pedido Uber Eats (Restaurante e Entregador)");
+            System.out.println("16 - Voltar");
             System.out.print("Escolha: ");
             int op = sc.nextInt();
             sc.nextLine();
@@ -71,10 +72,10 @@ public class MenuPassageiroCLI {
                 case 12 -> listarRestaurantesDisponiveis();
                 case 13 -> visualizarCardapioRestaurante();
                 case 14 -> acompanharPedidos();
-                case 15 -> {
+                case 15 -> avaliarPedidoDelivery();
+                case 16 -> {
                     return;
                 }
-                case 16 -> avaliarPedidoDelivery();
                 default -> System.out.println("Opcao invalida!");
             }
         }
@@ -452,23 +453,24 @@ public class MenuPassageiroCLI {
         if (restauranteOpt.isPresent()) {
             var restaurante = restauranteOpt.get();
             System.out.print("Dê uma nota de 1 a 5 para a comida do restaurante " + restaurante.getRazaoSocial() + ": ");
-            double notaRestaurante = sc.nextDouble();
+            float notaRestaurante = sc.nextFloat();
             sc.nextLine();
 
-            restaurante.adicionarAvaliacao((float) notaRestaurante);
+            restaurante.adicionarAvaliacao(notaRestaurante);
             db.updateRestaurante(restaurante);
             System.out.println("✅ Restaurante avaliado com sucesso!");
         }
 
+        // 2. Avaliando o Entregador
         if (pedidoEscolhido.getEntregadorId() != null && pedidoEscolhido.getEntregadorId() > 0) {
             var entregadorOpt = db.findEntregadorById(pedidoEscolhido.getEntregadorId());
             if (entregadorOpt.isPresent()) {
                 var entregador = entregadorOpt.get();
                 System.out.print("Dê uma nota de 1 a 5 para o motoboy " + entregador.getNome() + ": ");
-                double notaEntregador = sc.nextDouble();
+                float notaEntregador = sc.nextFloat();
                 sc.nextLine();
 
-                entregador.adicionarAvaliacao((float) notaEntregador);
+                entregador.adicionarAvaliacao(notaEntregador);
                 db.updateEntregador(entregador);
                 System.out.println("✅ Entregador parceiro avaliado com sucesso!");
             }

@@ -12,11 +12,11 @@
   "cnh" : "11122233311",
   "validadeCnh" : null,
   "tipoVeiculo" : "MOTO",
-  "avaliacoes" : [ ],
-  "avaliacaoMedia" : 0.0,
-  "totalAvaliacoes" : 0,
+  "avaliacoes" : [ 4.0, 5.0 ],
+  "avaliacaoMedia" : 4.5,
+  "totalAvaliacoes" : 2,
   "disponivel" : true,
-  "localizacaoAtual" : "Praia"
+  "localizacaoAtual" : "Centro"
 }, {
   "id" : 6,
   "username" : "testeMotor",
@@ -27,13 +27,13 @@
   "telefone" : "83999336642",
   "tipo" : "entregador",
   "dataCadastro" : "11/03/2026 19:02:57",
-  "ativo" : true,
+  "ativo" : false,
   "cnh" : "111111111",
   "validadeCnh" : null,
   "tipoVeiculo" : "MOTO",
   "avaliacoes" : [ ],
   "avaliacaoMedia" : 0.0,
   "totalAvaliacoes" : 0,
-  "disponivel" : true,
+  "disponivel" : false,
   "localizacaoAtual" : "Parque"
 } ]

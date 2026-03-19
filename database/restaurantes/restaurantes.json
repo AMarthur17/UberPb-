@@ -12,9 +12,9 @@
   "razaoSocial" : "RestTest",
   "endereco" : "Villa",
   "aberto" : true,
-  "avaliacoes" : [ ],
-  "avaliacaoMedia" : 0.0,
-  "totalAvaliacoes" : 0,
+  "avaliacoes" : [ 5.0, 4.0 ],
+  "avaliacaoMedia" : 4.5,
+  "totalAvaliacoes" : 2,
   "cardapio" : {
     "itens" : [ {
       "nome" : "frango",

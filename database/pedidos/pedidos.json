@@ -124,4 +124,109 @@
   "dataCriacao" : "2026-03-14T21:35:07.199806747",
   "tipoEntrega" : "IMEDIATO",
   "dataAgendamento" : null
+}, {
+  "id" : 14,
+  "passageiroId" : 4,
+  "restauranteId" : 1,
+  "entregadorId" : null,
+  "itens" : [ {
+    "item" : {
+      "nome" : "frango",
+      "preco" : 10.0,
+      "descricao" : "frito"
+    },
+    "quantidade" : 4,
+    "subtotal" : 40.0
+  } ],
+  "taxaEntrega" : 20.0,
+  "tarifaDinamica" : 1.4,
+  "valorTotal" : 68.0,
+  "status" : "AGUARDANDO_ENTREGADOR",
+  "dataCriacao" : "2026-03-19T04:10:39.6938278",
+  "tipoEntrega" : "IMEDIATO",
+  "dataAgendamento" : null
+}, {
+  "id" : 15,
+  "passageiroId" : 4,
+  "restauranteId" : 1,
+  "entregadorId" : null,
+  "itens" : [ {
+    "item" : {
+      "nome" : "frango",
+      "preco" : 10.0,
+      "descricao" : "frito"
+    },
+    "quantidade" : 10,
+    "subtotal" : 100.0
+  } ],
+  "taxaEntrega" : 20.0,
+  "tarifaDinamica" : 1.2,
+  "valorTotal" : 124.0,
+  "status" : "AGUARDANDO_ENTREGADOR",
+  "dataCriacao" : "2026-03-19T04:34:41.3227261",
+  "tipoEntrega" : "IMEDIATO",
+  "dataAgendamento" : null
+}, {
+  "id" : 16,
+  "passageiroId" : 4,
+  "restauranteId" : 1,
+  "entregadorId" : null,
+  "itens" : [ {
+    "item" : {
+      "nome" : "frango",
+      "preco" : 10.0,
+      "descricao" : "frito"
+    },
+    "quantidade" : 2,
+    "subtotal" : 20.0
+  } ],
+  "taxaEntrega" : 20.0,
+  "tarifaDinamica" : 1.0,
+  "valorTotal" : 40.0,
+  "status" : "AGUARDANDO_ENTREGADOR",
+  "dataCriacao" : "2026-03-19T04:38:38.0978506",
+  "tipoEntrega" : "IMEDIATO",
+  "dataAgendamento" : null
+}, {
+  "id" : 17,
+  "passageiroId" : 4,
+  "restauranteId" : 1,
+  "entregadorId" : 1,
+  "itens" : [ {
+    "item" : {
+      "nome" : "frango",
+      "preco" : 10.0,
+      "descricao" : "frito"
+    },
+    "quantidade" : 3,
+    "subtotal" : 30.0
+  } ],
+  "taxaEntrega" : 20.0,
+  "tarifaDinamica" : 1.0,
+  "valorTotal" : 50.0,
+  "status" : "ENTREGUE",
+  "dataCriacao" : "2026-03-19T04:49:38.1158351",
+  "tipoEntrega" : "IMEDIATO",
+  "dataAgendamento" : null
+}, {
+  "id" : 18,
+  "passageiroId" : 4,
+  "restauranteId" : 1,
+  "entregadorId" : 1,
+  "itens" : [ {
+    "item" : {
+      "nome" : "frango",
+      "preco" : 10.0,
+      "descricao" : "frito"
+    },
+    "quantidade" : 4,
+    "subtotal" : 40.0
+  } ],
+  "taxaEntrega" : 20.0,
+  "tarifaDinamica" : 1.0,
+  "valorTotal" : 60.0,
+  "status" : "ENTREGUE",
+  "dataCriacao" : "2026-03-19T06:50:44.7617069",
+  "tipoEntrega" : "IMEDIATO",
+  "dataAgendamento" : null
 } ]

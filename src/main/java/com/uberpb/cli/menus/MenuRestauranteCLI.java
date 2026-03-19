@@ -101,19 +101,8 @@ public class MenuRestauranteCLI {
                         db.updatePedido(pedido);
                         System.out.println("✅ Pedido movido para EM PREPARO.");
                     }
-                } else if (pedido.getStatus() == StatusPedido.EM_PREPARO) {
-                    System.out.println("Comida pronta? Chamar entregador parceiro? (s/n)");
-                    if (sc.nextLine().equalsIgnoreCase("s")) {
-                        java.util.List<com.uberpb.model.Entregador> disponiveis = db.findEntregadoresDisponiveis();
-                        if (!disponiveis.isEmpty()) {
-                            pedido.setEntregadorId(disponiveis.getFirst().getId());
-                            pedido.setStatus(StatusPedido.AGUARDANDO_ENTREGADOR);
-                            db.updatePedido(pedido);
-                            System.out.println("✅ Entregador notificado!");
-                        } else {
-                            System.out.println("⚠️ Nenhum entregador disponível no momento.");
-                        }
-                    }
+                } else {
+                    System.out.println("Este pedido já foi aceito ou está em outro status.");
                 }
             }
             case 2 -> {
@@ -127,9 +116,20 @@ public class MenuRestauranteCLI {
             }
             case 3 -> {
                 if (pedido.getStatus() == StatusPedido.EM_PREPARO) {
-                    pedido.setStatus(StatusPedido.AGUARDANDO_ENTREGADOR);
-                    db.updatePedido(pedido);
-                    System.out.println("🍳 Preparo finalizado. Aguardando entregador.");
+                    java.util.List<com.uberpb.model.Entregador> disponiveis = db.findEntregadoresDisponiveis();
+
+                    if (!disponiveis.isEmpty()) {
+                        // A MÁGICA ACONTECE AQUI: Pegamos o ID do motoboy online e salvamos no pedido
+                        pedido.setEntregadorId(disponiveis.getFirst().getId());
+                        pedido.setStatus(StatusPedido.AGUARDANDO_ENTREGADOR);
+                        db.updatePedido(pedido);
+                        System.out.println("🍳 Preparo finalizado. ✅ Entregador notificado!");
+                    } else {
+                        // Se não tiver ninguém online, ele fica aguardando na fila
+                        pedido.setStatus(StatusPedido.AGUARDANDO_ENTREGADOR);
+                        db.updatePedido(pedido);
+                        System.out.println("🍳 Preparo finalizado, mas ⚠️ Nenhum entregador disponível no momento. O pedido ficará na fila.");
+                    }
                 } else {
                     System.out.println("Pedido ainda não está em preparo.");
                 }
